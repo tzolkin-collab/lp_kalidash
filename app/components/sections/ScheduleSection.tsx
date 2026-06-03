@@ -1,5 +1,6 @@
 import { FadeIn } from "@/app/components/effects/FadeIn";
 import { BlurText } from "@/app/components/effects/BlurText";
+import ShinyText from "../effects/ShinyText";
 
 const SCHEDULE = [
   {
@@ -61,9 +62,7 @@ export function ScheduleSection() {
         {/* Header */}
         <div className="mb-16 max-w-2xl">
           <FadeIn fromY={12} duration={600}>
-            <p className="text-[11px] font-medium tracking-[0.18em] uppercase mb-5" style={{ color: "rgba(255,255,255,0.35)" }}>
-              Cronograma
-            </p>
+            <ShinyText text="Cronograma" disabled={false} speed={3} className="text-[11px] font-medium tracking-[0.18em] uppercase mb-5" />
           </FadeIn>
           <h2
             className="text-[clamp(28px,4vw,52px)] font-extrabold text-white"
@@ -122,7 +121,7 @@ export function ScheduleSection() {
                     >
                       {title}
                     </p>
-                    <p className="text-[13px] leading-relaxed" style={{ color: "rgba(255,255,255,0.4)" }}>
+                    <p className="text-[13px] leading-relaxed" style={{ color: "rgba(255, 255, 255, 0.829)" }}>
                       {description}
                     </p>
                   </div>

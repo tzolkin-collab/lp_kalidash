@@ -1,5 +1,6 @@
 import { FadeIn } from "@/app/components/effects/FadeIn";
 import { BlurText } from "@/app/components/effects/BlurText";
+import ShinyText from "../effects/ShinyText";
 
 const MENTORS = [
   {
@@ -51,9 +52,7 @@ export function MentorsSection() {
         {/* Header */}
         <div className="mb-16 max-w-3xl">
           <FadeIn fromY={12} duration={600}>
-            <p className="text-[11px] font-medium tracking-[0.18em] uppercase mb-5" style={{ color: "rgba(255,255,255,0.35)" }}>
-              Quem vai te guiar
-            </p>
+            <ShinyText text="Quem vai te guiar?" disabled={false} speed={3} className="text-[11px] font-medium tracking-[0.18em] uppercase mb-5" />
           </FadeIn>
           <h2
             className="text-[clamp(28px,4vw,52px)] font-extrabold text-white"
@@ -62,7 +61,9 @@ export function MentorsSection() {
             <BlurText text="Aprenda com quem implementa IA" wordDelay={45} duration={650} />
             <br />
             <BlurText text="em operações reais" wordDelay={45} duration={650} />{" "}
-            <BlurText text="todos os dias." wordDelay={45} duration={650} className="[color:rgba(255,255,255,0.4)]" />
+            <FadeIn fromY={12} duration={600}>
+            <ShinyText text="Todos os dias" disabled={false} speed={3} className="text-[clamp(28px,4vw,52px)] font-extrabold text-white mb-5" />
+          </FadeIn>
           </h2>
         </div>
 

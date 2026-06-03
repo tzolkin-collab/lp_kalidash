@@ -74,7 +74,7 @@ export function HeroSection() {
             <div className="flex items-center gap-4 flex-wrap">
               <a
                 href={CHECKOUT_URL}
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg bg-[#f59e0b] text-[#080510] font-bold text-[15px] hover:bg-[#fbbf24] transition-colors duration-150"
+                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg bg-[#f59e0b] text-[#f4f0ff] font-bold text-[15px] hover:bg-[#fbbf24] transition-colors duration-150"
                 style={{ animation: "pulse-gold 2.4s cubic-bezier(0.4,0,0.6,1) infinite" }}
               >
                 Garantir minha vaga
@@ -125,17 +125,17 @@ function EventCard() {
   ];
 
   const agenda = [
-    { time: "09h00", label: "Construindo a Base"    },
-    { time: "13h30", label: "Ativação dos Motores"  },
-    { time: "16h30", label: "Integrações & Escala"  },
-    { time: "17h30", label: "Certificação"           },
+    { time: "09:00", label: "Construindo a Base"    },
+    { time: "13:00", label: "Ativação dos Motores"  },
+    { time: "16:00", label: "Integrações & Escala"  },
+    { time: "17:00", label: "Certificação"           },
   ];
 
   return (
     <div
       className="rounded-2xl overflow-hidden border"
       style={{
-        borderColor:          "rgba(255,255,255,0.1)",
+        borderColor:          "rgba(244, 123, 255, 0.212)",
         background:           "linear-gradient(145deg, rgba(19,14,34,0.55) 0%, rgba(8,5,16,0.65) 100%)",
         backdropFilter:       "blur(24px)",
         WebkitBackdropFilter: "blur(24px)",
@@ -154,7 +154,7 @@ function EventCard() {
         </div>
         <span
           className="text-[11px] font-medium tracking-widest uppercase"
-          style={{ color: "rgba(255,255,255,0.3)" }}
+          style={{ color: "rgba(236, 173, 255, 0.918)" }}
         >
           18 · 07 · 2026 — Belo Horizonte
         </span>
@@ -165,7 +165,7 @@ function EventCard() {
 
         {/* Mentores */}
         <div className="flex flex-col gap-3">
-          <p className="text-[11px] font-medium tracking-widest uppercase" style={{ color: "rgba(255,255,255,0.3)" }}>
+          <p className="text-[11px] font-medium tracking-widest uppercase" style={{ color: "rgba(255, 255, 255, 0.884)" }}>
             Mentores
           </p>
           {speakers.map(({ name, role, initials }) => (
@@ -188,15 +188,15 @@ function EventCard() {
 
         {/* Agenda */}
         <div className="flex flex-col gap-2.5">
-          <p className="text-[11px] font-medium tracking-widest uppercase" style={{ color: "rgba(255,255,255,0.3)" }}>
+          <p className="text-[11px] font-medium tracking-widest uppercase" style={{ color: "rgba(236, 173, 255, 0.918)" }}>
             Agenda do dia
           </p>
           {agenda.map(({ time, label }) => (
             <div key={time} className="flex items-center justify-between">
-              <span className="text-[12px] font-mono" style={{ color: "rgba(255,255,255,0.35)" }}>
+              <span className="text-[12px] font-mono" style={{ color: "rgba(234, 187, 255, 0.945)" }}>
                 {time}
               </span>
-              <span className="text-[13px] font-medium text-white">{label}</span>
+              <span className="px-4 py-1.5 rounded-md bg-[#7c3aed] text-white text-xs font-semibold hover:bg-[#6d28d9] transition-colors duration-150">{label}</span>
             </div>
           ))}
         </div>

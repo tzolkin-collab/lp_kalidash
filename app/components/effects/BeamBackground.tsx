@@ -141,10 +141,10 @@ export function BeamBackground() {
         ctx.globalCompositeOperation = "source-over";
 
         const vg = ctx.createLinearGradient(0, 0, W, 0);
-        vg.addColorStop(0,    "rgba(8,5,16, 0.96)");
-        vg.addColorStop(0.28, "rgba(8,5,16, 0.72)");
-        vg.addColorStop(0.48, "rgba(8,5,16, 0.28)");
-        vg.addColorStop(0.65, "rgba(8,5,16, 0.06)");
+        vg.addColorStop(0,    "rgba(0, 0, 0, 0.96)");
+        vg.addColorStop(0.28, "rgba(0, 0, 0, 0.72)");
+        vg.addColorStop(0.48, "rgba(0, 0, 0, 0.28)");
+        vg.addColorStop(0.65, "rgba(0, 0, 0, 0.06)");
         vg.addColorStop(1,    "rgba(8,5,16, 0)");
 
         ctx.fillStyle = vg;
@@ -152,10 +152,10 @@ export function BeamBackground() {
 
         // Vinheta superior — evita sangramento para fora da tela
         const tg = ctx.createLinearGradient(0, 0, 0, H);
-        tg.addColorStop(0,    "rgba(8,5,16, 0.6)");
+        tg.addColorStop(0,    "rgba(0, 0, 0, 0.6)");
         tg.addColorStop(0.18, "rgba(8,5,16, 0)");
         tg.addColorStop(0.82, "rgba(8,5,16, 0)");
-        tg.addColorStop(1,    "rgba(8,5,16, 0.4)");
+        tg.addColorStop(1,    "rgba(0, 0, 0, 0.4)");
 
         ctx.fillStyle = tg;
         ctx.fillRect(0, 0, W, H);
