@@ -36,10 +36,9 @@ export function InvestmentSection() {
   const [enableLaser, setEnableLaser] = useState(false);
 
   // Lazy-mount do canvas WebGL: só inicializa quando o usuário rolar para perto.
-  // Desabilitado em mobile e quando reduced-motion está ativo.
+  // Desabilitado quando reduced-motion está ativo.
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (window.innerWidth < 768) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const el = stageRef.current;

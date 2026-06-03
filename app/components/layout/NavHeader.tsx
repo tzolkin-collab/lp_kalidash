@@ -11,10 +11,9 @@ export function NavHeader() {
             src="/kalidash_logo_header_branca.webp"
             alt="Kalidash Logo"
             width={75}
-            height={75}
+            height={45}
             className="object-contain hover:scale-120 transition-all mb-[1.5px]"
             priority
-            style={{ width: "auto", height: "auto" }}
           />
         </a>
 
