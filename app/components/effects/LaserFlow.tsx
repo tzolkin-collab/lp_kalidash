@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
-import { Timer } from "three/examples/jsm/misc/Timer.js";
+import { Timer } from "three/src/core/Timer.js";
 import "./LaserFlow.css";
 
 type Props = {
@@ -382,8 +382,7 @@ export const LaserFlow: React.FC<Props> = ({
     mesh.frustumCulled = false;
     scene.add(mesh);
 
-    const timer = new Timer();
-    timer.connect(document);
+    const clock = new THREE.Clock();
     let prevTime = 0;
     let fade = hasFadedRef.current ? 1 : 0;
 
@@ -480,8 +479,7 @@ export const LaserFlow: React.FC<Props> = ({
       raf = requestAnimationFrame(animate);
       if (pausedRef.current || !inViewRef.current) return;
 
-      timer.update();
-      const t = timer.getElapsed();
+      const t = clock.getElapsedTime();
       const dt = Math.max(0, t - prevTime);
       prevTime = t;
 
@@ -515,7 +513,6 @@ export const LaserFlow: React.FC<Props> = ({
 
     return () => {
       cancelAnimationFrame(raf);
-      timer.dispose();
       ro.disconnect();
       io.disconnect();
       document.removeEventListener("visibilitychange", onVis);
