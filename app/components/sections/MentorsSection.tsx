@@ -8,7 +8,7 @@ const MENTORS = [
     initials: "CG",
     name: "César Germano",
     role: "CEO & Founder — Kalidash",
-    image: "/césar.jpg",
+    image: "/cesar.webp",
     bio: "Há anos ajudando empresas a transformar dados e Inteligência Artificial em crescimento operacional.",
     highlights: [
       "Fundador da Kalidash — dados, automação e IA",
@@ -22,7 +22,7 @@ const MENTORS = [
     initials: "IB",
     name: "Iago Braz",
     role: "COO & Co-Founder — Kalidash",
-    image: "/iago.jpg",
+    image: "/iago.webp",
     bio: "Especialista em transformar visão estratégica em execução escalável de alta performance.",
     highlights: [
       "Lidera projetos de crescimento em IA e eficiência operacional",

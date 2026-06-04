@@ -158,7 +158,8 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
             const rotation = rotationAmount ? i * rotationAmount * scaleProgress : 0;
 
             let blur = 0;
-            if (blurAmount) {
+            const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+            if (blurAmount && !isMobile) {
                 let topCardIndex = 0;
                 for (let j = 0; j < cardsRef.current.length; j++) {
                     const jCardTop = cardOffsets[j] !== undefined ? cardOffsets[j] : 0;

@@ -171,7 +171,7 @@ export function HeroSection() {
           <div className="flex items-center gap-4 rounded-xl overflow-hidden border border-white/5 bg-[#130e22]/50 backdrop-blur-md p-3">
             <div className="relative w-20 h-20 rounded-lg overflow-hidden shrink-0">
               <Image
-                src="/césar.jpg"
+                src="/cesar.webp"
                 alt="César Germano"
                 fill
                 className="object-cover object-top"
@@ -190,7 +190,7 @@ export function HeroSection() {
           <div className="flex items-center gap-4 rounded-xl overflow-hidden border border-white/5 bg-[#130e22]/50 backdrop-blur-md p-3">
             <div className="relative w-20 h-20 rounded-lg overflow-hidden shrink-0">
               <Image
-                src="/iago.jpg"
+                src="/iago.webp"
                 alt="Iago Braz"
                 fill
                 className="object-cover object-top"

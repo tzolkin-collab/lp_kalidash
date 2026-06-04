@@ -320,7 +320,8 @@ export const LaserFlow: React.FC<Props> = ({
     });
     rendererRef.current = renderer;
 
-    baseDprRef.current = Math.min(dpr ?? (window.devicePixelRatio || 1), 2);
+    const isMobile = window.innerWidth < 768;
+    baseDprRef.current = Math.min(dpr ?? (window.devicePixelRatio || 1), isMobile ? 0.5 : 1);
     currentDprRef.current = baseDprRef.current;
 
     renderer.setPixelRatio(currentDprRef.current);
