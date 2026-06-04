@@ -70,7 +70,7 @@ const DELIVERABLES = [
 
 export function ScopeSection() {
   return (
-    <section id="escopo" className="relative py-24 sm:py-32">
+    <section id="escopo" className="relative py-15 sm:py-32">
 
       <div
         aria-hidden="true"

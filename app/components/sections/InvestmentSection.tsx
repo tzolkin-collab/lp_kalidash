@@ -38,6 +38,16 @@ function LockIcon() {
 export function InvestmentSection() {
   const stageRef = useRef<HTMLDivElement | null>(null);
   const [enableLaser, setEnableLaser] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const media = window.matchMedia("(max-width: 1023px)");
+    setIsMobile(media.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    media.addEventListener("change", handler);
+    return () => media.removeEventListener("change", handler);
+  }, []);
 
   // Lazy-mount do canvas WebGL: só inicializa quando o usuário rolar para perto.
   // Desabilitado quando reduced-motion está ativo.
@@ -60,8 +70,66 @@ export function InvestmentSection() {
     return () => io.disconnect();
   }, []);
 
+  const cardContent = (
+    <div className="p-7 flex flex-col gap-6 w-full h-full relative">
+      {/* Badge abertura */}
+      <div className="absolute -top-3 left-6">
+        <span
+          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase text-white"
+          style={{ background: "linear-gradient(90deg, #5c17a0, #a3597f, #7ac5e6)" }}
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+          Lote de Abertura
+        </span>
+      </div>
+
+      <div className="pt-3">
+        <p className="text-[12px] font-medium tracking-widest uppercase mb-3" style={{ color: "rgba(255,255,255,0.35)" }}>
+          Lote 01 · Mini Agência Start
+        </p>
+        <div className="flex items-baseline gap-1.5 mb-1">
+          <span className="text-[14px] font-medium" style={{ color: "rgba(255,255,255,0.4)" }}>R$</span>
+          <span className="text-[52px] font-extrabold text-white leading-none" style={{ letterSpacing: "-0.03em" }}>497</span>
+        </div>
+        <p className="text-[12px]" style={{ color: "rgba(255,255,255,0.35)" }}>
+          <s className="opacity-90">De R$ 1.997</s> · ou 12x no cartão
+        </p>
+      </div>
+
+      <div className="h-px w-full" style={{ background: "rgba(255,255,255,0.06)" }} />
+
+      <ul className="flex flex-col gap-3">
+        {INCLUDED.map((item) => (
+          <li key={item} className="flex items-start gap-2.5">
+            <span className="mt-0.5 w-4 h-4 rounded-full flex items-center justify-center shrink-0 text-[#9d4edd]"
+              style={{ background: "rgba(124,58,237,0.2)" }}>
+              <CheckIcon />
+            </span>
+            <span className="text-[13px] leading-snug" style={{ color: "rgba(255,255,255,0.7)" }}>
+              {item}
+            </span>
+          </li>
+        ))}
+      </ul>
+
+      <a
+        href={CHECKOUT_URL}
+        className="w-full flex items-center justify-center gap-2 py-3.5 rounded-lg font-bold text-[14px] text-[#f3edf8] transition-colors duration-150 hover:bg-[#fbbf24]"
+        style={{
+          background: "#f59e0b",
+          animation: "pulse-gold 2.4s cubic-bezier(0.4,0,0.6,1) infinite",
+        }}
+      >
+        Garantir minha vaga
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+  );
+
   return (
-    <section id="investimento" className="relative py-24 sm:py-32 overflow-hidden">
+    <section id="investimento" className="relative py-15 sm:py-32 overflow-hidden">
 
       {/* Canvas WebGL — posicionado no fundo de toda a seção */}
       {enableLaser && (
@@ -160,73 +228,28 @@ export function InvestmentSection() {
 
             {/* ── LOTE 1 — ATIVO (z-index alto, fundo opaco para destaque) ── */}
             <FadeIn delay={100} duration={800} fromY={24} scale={0.97} className="md:col-span-1 relative z-30">
-              <BorderGlow
-                className="relative w-full"
-                colors={['#7327c0', '#f2f3a9', '#38bdf8']}
-                backgroundColor="colors={['#c084fc', '#f472b6', '#38bdf8']}"
-                borderRadius={28}
-                animated={true}
-                glowRadius={1.0}
-                glowIntensity={0.9}
-                coneSpread={15}
-                edgeSensitivity={1}
-              >
-                <div className="p-7 flex flex-col gap-6 w-full h-full relative">
-                  {/* Badge abertura */}
-                  <div className="absolute -top-3 left-6">
-                    <span
-                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase text-white"
-                      style={{ background: "linear-gradient(90deg, #5c17a0, #a3597f, #7ac5e6)" }}
-                    >
-                      <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-                      Lote de Abertura
-                    </span>
-                  </div>
-
-                  <div className="pt-3">
-                    <p className="text-[12px] font-medium tracking-widest uppercase mb-3" style={{ color: "rgba(255,255,255,0.35)" }}>
-                      Lote 01 · Mini Agência Start
-                    </p>
-                    <div className="flex items-baseline gap-1.5 mb-1">
-                      <span className="text-[14px] font-medium" style={{ color: "rgba(255,255,255,0.4)" }}>R$</span>
-                      <span className="text-[52px] font-extrabold text-white leading-none" style={{ letterSpacing: "-0.03em" }}>497</span>
-                    </div>
-                    <p className="text-[12px]" style={{ color: "rgba(255,255,255,0.35)" }}>
-                      <s className="opacity-90">De R$ 1.997</s> · ou 12x no cartão
-                    </p>
-                  </div>
-
-                  <div className="h-px w-full" style={{ background: "rgba(255,255,255,0.06)" }} />
-
-                  <ul className="flex flex-col gap-3">
-                    {INCLUDED.map((item) => (
-                      <li key={item} className="flex items-start gap-2.5">
-                        <span className="mt-0.5 w-4 h-4 rounded-full flex items-center justify-center shrink-0 text-[#9d4edd]"
-                          style={{ background: "rgba(124,58,237,0.2)" }}>
-                          <CheckIcon />
-                        </span>
-                        <span className="text-[13px] leading-snug" style={{ color: "rgba(255,255,255,0.7)" }}>
-                          {item}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <a
-                    href={CHECKOUT_URL}
-                    className="w-full flex items-center justify-center gap-2 py-3.5 rounded-lg font-bold text-[14px] text-[#f3edf8] transition-colors duration-150 hover:bg-[#fbbf24]"
-                    style={{
-                      background: "#f59e0b",
-                      animation: "pulse-gold 2.4s cubic-bezier(0.4,0,0.6,1) infinite",
-                    }}
-                  >
-                    Garantir minha vaga
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
-                  </a>
+              {isMobile ? (
+                <div
+                  className="relative w-full rounded-[28px] border bg-[#130e22]/90 backdrop-blur-md"
+                  style={{ borderColor: "rgba(255,255,255,0.08)" }}
+                >
+                  {cardContent}
                 </div>
-              </BorderGlow>
+              ) : (
+                <BorderGlow
+                  className="relative w-full"
+                  colors={['#7327c0', '#f2f3a9', '#38bdf8']}
+                  backgroundColor="colors={['#c084fc', '#f472b6', '#38bdf8']}"
+                  borderRadius={28}
+                  animated={true}
+                  glowRadius={1.0}
+                  glowIntensity={0.9}
+                  coneSpread={15}
+                  edgeSensitivity={1}
+                >
+                  {cardContent}
+                </BorderGlow>
+              )}
             </FadeIn>
 
             {/* ── LOTES 2 E 3 ── */}

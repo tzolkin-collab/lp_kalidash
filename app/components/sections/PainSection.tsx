@@ -31,7 +31,7 @@ const FEATURES = [
 
 export function PainSection() {
   return (
-    <section className="relative py-24 sm:py-32">
+    <section className="relative py-15 sm:py-32">
 
       <div
         aria-hidden="true"
@@ -44,9 +44,9 @@ export function PainSection() {
         {/* Header editorial */}
         <div className="mb-16">
           <div className="mb-5">
-          <FadeIn fromY={12} duration={600}>
-            <ShinyText text="O que você constrói no dia" disabled={false} speed={3} className="text-[11px] font-medium tracking-[0.18em] uppercase mb-5" />
-          </FadeIn>
+            <FadeIn fromY={12} duration={600}>
+              <ShinyText text="O que você constrói no dia" disabled={false} speed={3} className="text-[11px] font-medium tracking-[0.18em] uppercase mb-5" />
+            </FadeIn>
           </div>
           <h2
             className="text-[clamp(32px,4.5vw,56px)] font-extrabold text-white max-w-2xl"

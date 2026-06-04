@@ -49,7 +49,7 @@ const SCHEDULE = [
 
 export function ScheduleSection() {
   return (
-    <section id="cronograma" className="relative py-24 sm:py-32">
+    <section id="cronograma" className="relative py-15 sm:py-32">
 
       <div
         aria-hidden="true"
@@ -111,7 +111,7 @@ export function ScheduleSection() {
                   </div>
 
                   {/* Conteúdo */}
-                  <div 
+                  <div
                     className="flex flex-col gap-2 flex-1 p-5 rounded-xl transition-all duration-300"
                     style={{
                       background: highlight ? "rgba(124,58,237,0.04)" : "transparent",
@@ -143,8 +143,8 @@ export function ScheduleSection() {
                       </span>
                     </div>
 
-                    <p 
-                      className="text-[13px] leading-relaxed mt-1" 
+                    <p
+                      className="text-[13px] leading-relaxed mt-1"
                       style={{ color: highlight ? "rgba(255,255,255,0.75)" : "rgba(255, 255, 255, 0.45)" }}
                     >
                       {description}

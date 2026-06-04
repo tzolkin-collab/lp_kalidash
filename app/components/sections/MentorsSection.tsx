@@ -42,7 +42,7 @@ const BRANDS = [
 
 export function MentorsSection() {
   return (
-    <section id="mentores" className="relative py-24 sm:py-32">
+    <section id="mentores" className="relative py-15 sm:py-32">
 
       <div
         aria-hidden="true"

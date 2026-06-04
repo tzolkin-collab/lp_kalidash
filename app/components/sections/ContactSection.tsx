@@ -3,7 +3,7 @@ import { WHATSAPP_URL, CHECKOUT_URL } from "@/app/utilities/constants";
 
 export function ContactSection() {
   return (
-    <section className="relative py-24 sm:py-32">
+    <section className="relative py-15 sm:py-32">
 
       <div
         aria-hidden="true"

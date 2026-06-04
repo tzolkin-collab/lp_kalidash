@@ -78,7 +78,7 @@ export function HeroSection() {
       />
 
       {/* Layout — apenas coluna esquerda com o texto */}
-      <div className="relative w-full max-w-7xl mx-auto px-6 sm:px-10 pt-24 pb-32" style={{ zIndex: 5 }}>
+      <div className="relative w-full max-w-7xl mx-auto px-6 sm:px-10 pt-24 pb-12" style={{ zIndex: 5 }}>
         <div className="flex flex-col items-start gap-7 max-w-[600px]">
 
           {/* Badge — entra primeiro */}
