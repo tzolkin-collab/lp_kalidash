@@ -97,10 +97,11 @@ export default function DarkVeil({
 }: Props) {
     const ref = useRef<HTMLCanvasElement>(null);
     useEffect(() => {
+        const isMobile = window.innerWidth < 768;
+        if (isMobile) return;
+
         const canvas = ref.current as HTMLCanvasElement;
         const parent = canvas.parentElement as HTMLElement;
-
-        const isMobile = window.innerWidth < 768;
         const renderer = new Renderer({
             dpr: Math.min(window.devicePixelRatio, isMobile ? 0.5 : 1),
             canvas

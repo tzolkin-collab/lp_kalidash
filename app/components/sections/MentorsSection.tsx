@@ -1,49 +1,82 @@
+"use client";
+import { useState, useEffect } from "react";
 import { FadeIn } from "@/app/components/effects/FadeIn";
 import { BlurText } from "@/app/components/effects/BlurText";
-import ShinyText from "../effects/ShinyText";
+import ShinyText from "@/app/components/effects/ShinyText";
+import BorderGlow from "@/app/components/effects/BorderGlow";
 import Image from "next/image";
 
-const MENTORS = [
+const CAROUSEL_ITEMS = [
   {
-    initials: "CG",
-    name: "César Germano",
-    role: "CEO & Founder — Kalidash",
-    image: "/cesar.webp",
-    bio: "Há anos ajudando empresas a transformar dados e Inteligência Artificial em crescimento operacional.",
+    id: "history",
+    title: "A Nossa Trajetória",
+    subtitle: "Por Trás da Kalidash",
+    content: "Fundada por executivos com vasta experiência em tecnologia, marketing e dados. Nossa missão é transformar visão estratégica em execução escalável e acelerar os seus resultados através da Inteligência Artificial.",
     highlights: [
-      "Fundador da Kalidash — dados, automação e IA",
+      "Mais de 140 empresas impactadas",
+      "Especialistas em IA e eficiência operacional",
+      "Experiência em ecossistemas de alta performance"
+    ],
+    image: "/i-r3XK9N7-X3.jpg",
+    layout: "image-left",
+    imageClass: "object-[30%_center]"
+  },
+  {
+    id: "cesar",
+    title: "César Germano",
+    subtitle: "CEO & Founder — Kalidash",
+    content: "Há anos ajudando empresas a transformar dados e Inteligência Artificial em crescimento operacional e receita.",
+    highlights: [
       "Mais de 140 empresas impactadas por projetos de tecnologia",
       "Executivo em RD Station Marketing e PicPay",
       "Professor e mentor na Xperiun Education",
-      "Especialista em sistemas de crescimento orientados por dados",
+      "Especialista em sistemas de crescimento orientados por dados"
     ],
+    image: "/cesar0357.jpg",
+    layout: "image-right",
+    imageClass: "object-[center_15%]"
   },
   {
-    initials: "IB",
-    name: "Iago Braz",
-    role: "COO & Co-Founder — Kalidash",
-    image: "/iago.webp",
-    bio: "Especialista em transformar visão estratégica em execução escalável de alta performance.",
+    id: "iago",
+    title: "Iago Braz",
+    subtitle: "COO & Co-Founder — Kalidash",
+    content: "Especialista em transformar visão estratégica em execução escalável de alta performance.",
     highlights: [
       "Lidera projetos de crescimento em IA e eficiência operacional",
       "Hotmart, Sympla e Blip no histórico de atuação",
       "Mentor convidado: Rocketseat, Conquer e Hashtag",
-      "Conecta tecnologia, marketing e processos para acelerar resultados",
-      "De estagiário a sócio da maior indústria de impressoras 3D do Brasil",
+      "De estagiário a sócio da maior indústria de impressoras 3D do Brasil"
     ],
-  },
+    image: "/iago.jpg",
+    layout: "image-right",
+    imageClass: "object-[center_15%]"
+  }
 ];
 
+// Logos oficiais
 const BRANDS = [
-  "L'Oréal", "Ambev", "Totvs", "Nexa Resources", "Vale", "ArcelorMittal",
-  "Sympla", "Hotmart", "PicPay", "RD Station", "Fundação Dom Cabral",
-  "SulAmérica", "Neon", "Danka", "Votorantim Cimentos",
+  { name: "FDC", file: "/logos/new_brands/FDC_idycOR3Cmb_0.png" },
+  { name: "Nexa", file: "/logos/new_brands/Nexa_Resources-logo_brandlogos.net_038950.svg" },
+  { name: "RD Station", file: "/logos/new_brands/RD_Station_idEG-7z5oJ_2.png" },
+  { name: "Danka", file: "/logos/new_brands/danka.svg" },
+  { name: "Neon", file: "/logos/new_brands/neon-logo.svg" },
+  { name: "PicPay", file: "/logos/new_brands/picpay-1.svg" },
+  { name: "SulAmérica", file: "/logos/new_brands/sulamerica-saude-logo.svg" },
+  { name: "Sympla", file: "/logos/new_brands/sympla-seeklogo.png" },
 ];
 
 export function MentorsSection() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % CAROUSEL_ITEMS.length);
+    }, 7000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <section id="mentores" className="relative py-15 sm:py-32">
-
       <div
         aria-hidden="true"
         className="absolute top-0 left-0 right-0 h-px"
@@ -70,69 +103,99 @@ export function MentorsSection() {
           </h2>
         </div>
 
-        {/* Cards dos mentores */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-20">
-          {MENTORS.map(({ initials, name, role, bio, highlights, image }, i) => (
-            <FadeIn key={name} delay={i * 120} duration={800} fromY={24} fromX={i === 0 ? -16 : 16}>
-              <div
-                className="rounded-2xl p-8 h-full flex flex-col gap-6"
-                style={{
-                  background: "linear-gradient(145deg, rgba(19,14,34,0.6) 0%, rgba(13,9,17,0.8) 100%)",
-                  border: "1px solid rgba(255,255,255,0.08)",
-                }}
-              >
-                {/* Avatar + nome */}
-                <div className="flex items-center gap-4">
-                  <div
-                    className="w-14 h-14 rounded-full flex items-center justify-center text-[15px] font-bold text-white flex-shrink-0 overflow-hidden relative border"
-                    style={{
-                      background: "linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%)",
-                      borderColor: "rgba(255,255,255,0.08)",
-                    }}
+        {/* Premium Carousel Card */}
+        <div className="w-full mb-12 relative flex flex-col items-center">
+          <FadeIn delay={200} duration={800} fromY={24} className="w-full">
+            <BorderGlow
+              colors={['#7c3aed', '#c084fc', '#4c1d95']}
+              backgroundColor="#0a0a0a"
+              borderRadius={32}
+              animated={true}
+              glowIntensity={0.6}
+              coneSpread={20}
+              className="relative w-full"
+            >
+              <div className="relative w-full bg-gradient-to-br from-[#121212] to-[#050505] min-h-[850px] md:min-h-[500px] overflow-hidden rounded-[32px] border border-white/5">
+                
+                {/* Background ambient glow */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#7c3aed]/5 to-transparent pointer-events-none" />
+
+                {CAROUSEL_ITEMS.map((item, i) => (
+                  <div 
+                    key={item.id} 
+                    className={`absolute inset-0 transition-all duration-1000 ease-in-out ${currentIndex === i ? 'opacity-100 z-10 translate-y-0' : 'opacity-0 z-0 translate-y-4 pointer-events-none'}`}
                   >
-                    {image ? (
-                      <Image
-                        src={image}
-                        alt={name}
-                        fill
-                        className="object-cover object-top"
-                        sizes="56px"
-                      />
-                    ) : (
-                      initials
-                    )}
-                  </div>
-                  <div>
-                    <p className="text-[17px] font-bold text-white leading-tight">{name}</p>
-                    <p className="text-[12px] font-medium mt-0.5" style={{ color: "rgba(157,78,221,0.85)" }}>
-                      {role}
-                    </p>
-                  </div>
-                </div>
+                    
+                    {/* Full-bleed Image with Infinite Fade */}
+                    <div className={`absolute inset-y-0 ${item.layout === 'image-left' ? 'left-0' : 'right-0'} w-full md:w-[60%] ${item.id === 'history' ? 'hidden md:block' : ''}`}>
+                      <div 
+                        className="relative w-full h-full"
+                        style={{ 
+                          maskImage: item.layout === 'image-left' 
+                            ? "linear-gradient(to right, black 50%, transparent 100%)" 
+                            : "linear-gradient(to left, black 50%, transparent 100%)",
+                          WebkitMaskImage: item.layout === 'image-left' 
+                            ? "linear-gradient(to right, black 50%, transparent 100%)" 
+                            : "linear-gradient(to left, black 50%, transparent 100%)"
+                        }}
+                      >
+                        <Image 
+                          src={item.image} 
+                          alt={item.title} 
+                          fill 
+                          className={`object-cover ${item.imageClass || 'object-center'}`} 
+                        />
+                      </div>
+                    </div>
 
-                {/* Bio */}
-                <p className="text-[14px] leading-relaxed" style={{ color: "rgba(255,255,255,0.5)" }}>
-                  {bio}
-                </p>
+                    {/* Content Side */}
+                    <div className={`relative z-10 h-full p-8 md:p-12 flex flex-col ${item.layout === 'image-left' ? 'md:flex-row-reverse' : 'md:flex-row'} items-center`}>
+                      <div className="w-full md:w-[50%] flex flex-col justify-center gap-6 h-full">
+                        <div>
+                          <p className="text-[11px] font-bold tracking-[0.2em] uppercase text-purple-400 mb-3">{item.subtitle}</p>
+                          <h3 className="text-3xl md:text-4xl font-extrabold text-white leading-tight">{item.title}</h3>
+                        </div>
+                        
+                        <p className="text-[15px] leading-relaxed text-white/60">
+                          {item.content}
+                        </p>
+                        
+                        <ul className="flex flex-col gap-3.5 mt-2">
+                          {item.highlights.map((highlight, idx) => (
+                            <li key={idx} className="flex items-start gap-3">
+                              <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-purple-500 flex-shrink-0 shadow-[0_0_8px_rgba(168,85,247,0.8)]" />
+                              <span className="text-[14px] leading-snug text-white/70">
+                                {highlight}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
 
-                {/* Highlights */}
-                <ul className="flex flex-col gap-2.5">
-                  {highlights.map((item) => (
-                    <li key={item} className="flex items-start gap-2.5">
-                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#7c3aed] flex-shrink-0" />
-                      <span className="text-[13px] leading-snug" style={{ color: "rgba(255,255,255,0.65)" }}>
-                        {item}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
+                  </div>
+                ))}
               </div>
-            </FadeIn>
-          ))}
+            </BorderGlow>
+          </FadeIn>
+
+          {/* Navigation Dots (Movidos para fora do card) */}
+          <FadeIn delay={400} duration={600} fromY={10} className="mt-8 relative z-20">
+            <div className="flex gap-3">
+              {CAROUSEL_ITEMS.map((_, i) => (
+                <button 
+                  key={i} 
+                  onClick={() => setCurrentIndex(i)} 
+                  aria-label={`Ir para o slide ${i + 1}`}
+                  className={`h-1.5 rounded-full transition-all duration-500 ease-out ${currentIndex === i ? 'bg-purple-500 w-8 shadow-[0_0_10px_rgba(168,85,247,0.6)]' : 'bg-white/20 w-3 hover:bg-white/40'}`} 
+                />
+              ))}
+            </div>
+          </FadeIn>
         </div>
 
         {/* Social proof — ticker de marcas */}
-        <FadeIn delay={300} duration={700} fromY={16}>
+        <FadeIn delay={400} duration={700} fromY={16}>
           <div
             className="rounded-2xl py-8 px-6 overflow-hidden"
             style={{ border: "1px solid rgba(255,255,255,0.06)" }}
@@ -143,28 +206,24 @@ export function MentorsSection() {
 
             {/* Ticker */}
             <div className="relative overflow-hidden">
-              {/* Fade lateral esquerdo */}
               <div
                 className="absolute left-0 top-0 bottom-0 w-20 z-10 pointer-events-none"
                 style={{ background: "linear-gradient(90deg, #0d0911, transparent)" }}
               />
-              {/* Fade lateral direito */}
               <div
                 className="absolute right-0 top-0 bottom-0 w-20 z-10 pointer-events-none"
                 style={{ background: "linear-gradient(270deg, #0d0911, transparent)" }}
               />
 
-              <div
-                className="flex gap-10 w-max animate-ticker"
-              >
-                {[...BRANDS, ...BRANDS].map((brand, i) => (
-                  <span
+              <div className="flex items-center gap-12 w-max animate-ticker">
+                {[...BRANDS, ...BRANDS].map(({ name, file }, i) => (
+                  <img
                     key={i}
-                    className="text-[13px] font-medium whitespace-nowrap flex-shrink-0"
-                    style={{ color: "rgba(255, 255, 255, 0.514)" }}
-                  >
-                    {brand}
-                  </span>
+                    src={file}
+                    alt={name}
+                    className="h-6 w-auto object-contain flex-shrink-0"
+                    style={{ filter: "brightness(0) invert(1)", opacity: 0.5 }}
+                  />
                 ))}
               </div>
             </div>

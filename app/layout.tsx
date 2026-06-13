@@ -13,13 +13,13 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Imersão Claude para Marketing — Kalidash",
   description:
-    "Monte sua própria mini agência de marketing em 8 horas. Imersão presencial em Belo Horizonte, 18 de Julho.",
+    "Monte sua própria mini agência de marketing em 8 horas. Imersão presencial em Belo Horizonte, 01 de Agosto.",
   icons: {
     icon: "/kalidash_symbol.svg",
   },
   openGraph: {
     title: "Imersão Claude para Marketing — Kalidash",
-    description: "8 horas de pura engenharia operativa. BH, 18/07.",
+    description: "8 horas de pura engenharia operativa. BH, 01/08.",
     locale: "pt_BR",
     type: "website",
   },

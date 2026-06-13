@@ -76,7 +76,7 @@ export function InvestmentSection() {
       <div className="absolute -top-3 left-6">
         <span
           className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase text-white"
-          style={{ background: "linear-gradient(90deg, #5c17a0, #a3597f, #7ac5e6)" }}
+          style={{ background: "linear-gradient(90deg, #d46803, #e97e05, #f18f0e)" }}
         >
           <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
           Lote de Abertura
@@ -205,11 +205,9 @@ export function InvestmentSection() {
             className="text-[clamp(28px,4vw,52px)] font-extrabold text-white"
             style={{ lineHeight: 1.1, letterSpacing: "-0.025em" }}
           >
-            <BlurText text="Uma estrutura de milhares" wordDelay={45} duration={650} />
+            <BlurText text="Uma estrutura de milhares de reais" wordDelay={45} duration={650} />
             <br />
-            <FadeIn fromY={12} duration={600}>
-              <ShinyText text="O que você constrói no dia" disabled={false} speed={3} className="text-[clamp(28px,4vw,52px)] font-extrabold text-white mb-5" />
-            </FadeIn>
+            <BlurText text="por um investimento único." wordDelay={45} duration={650} className="[color:rgba(124,58,237,0.9)]" />
           </h2>
           <FadeIn delay={400} fromY={12} duration={600}>
             <p className="mt-5 text-[15px] leading-relaxed" style={{ color: "rgba(255,255,255,0.45)" }}>
@@ -238,7 +236,7 @@ export function InvestmentSection() {
               ) : (
                 <BorderGlow
                   className="relative w-full"
-                  colors={['#7327c0', '#f2f3a9', '#38bdf8']}
+                  colors={['#d46803', '#e97e05', '#f18f0e']}
                   backgroundColor="colors={['#c084fc', '#f472b6', '#38bdf8']}"
                   borderRadius={28}
                   animated={true}

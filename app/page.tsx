@@ -1,6 +1,5 @@
 import { NavHeader }       from "@/app/components/layout/NavHeader";
 import { HeroSection }      from "@/app/components/sections/HeroSection";
-import { PainSection }      from "@/app/components/sections/PainSection";
 import { ScopeSection }     from "@/app/components/sections/ScopeSection";
 import { MentorsSection }   from "@/app/components/sections/MentorsSection";
 import { ScheduleSection }  from "@/app/components/sections/ScheduleSection";
@@ -13,7 +12,6 @@ export default function LandingPage() {
       <NavHeader />
       <main>
         <HeroSection />
-        <PainSection />
         <ScopeSection />
         <MentorsSection />
         <ScheduleSection />

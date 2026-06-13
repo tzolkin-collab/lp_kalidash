@@ -42,7 +42,7 @@ const SCHEDULE = [
   {
     time: "17h30",
     title: "Encerramento & Certificação",
-    description: "Você não sai com um caderno cheio de anotações — você desliga o notebook com os 5 ativos de marketing validados, testados e prontos para rodar.",
+    description: "Chega de rascunhos. O dia termina com a engenharia do seu marketing executada, revisada e pronta para rodar no automático. Você fecha o computador com a certeza de que recuperou suas 20 horas semanais.",
     highlight: false,
   },
 ];
@@ -68,9 +68,9 @@ export function ScheduleSection() {
             className="text-[clamp(28px,4vw,52px)] font-extrabold text-white"
             style={{ lineHeight: 1.1, letterSpacing: "-0.025em" }}
           >
-            <BlurText text="9 horas de pura" wordDelay={50} duration={650} />
+            <BlurText text="Um sábado de pura" wordDelay={50} duration={650} />
             <br />
-            <BlurText text="engenharia operativa." wordDelay={50} duration={650} className="[color:rgba(124,58,237,0.9)]" />
+            <BlurText text="execução prática e networking." wordDelay={50} duration={650} className="[color:rgba(124,58,237,0.9)]" />
           </h2>
         </div>
 

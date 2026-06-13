@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 715.32333 519.05"
+   width="700"
+   height="700"
+   class="logo-neon-pejota"
+   version="1.1"
+   id="svg40"
+   sodipodi:docname="neon-logo.svg"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
+   inkscape:export-filename="C:\Users\suitedoalex\sites\neon-logo-0.png"
+   inkscape:export-xdpi="561.73712"
+   inkscape:export-ydpi="561.73712">
+  <metadata
+     id="metadata44">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Logotipo Neon pejota</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1600"
+     inkscape:window-height="837"
+     id="namedview42"
+     showgrid="false"
+     inkscape:zoom="0.53369726"
+     inkscape:cx="633.89619"
+     inkscape:cy="546.84266"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg40" />
+  <title
+     id="neon-pejota">Logotipo Neon pejota</title>
+  <defs
+     id="defs28">
+    <linearGradient
+       id="a"
+       x1="672.24463"
+       y1="-62.382656"
+       x2="806.08191"
+       y2="-62.382656"
+       gradientUnits="userSpaceOnUse"
+       xlink:href="#a"
+       gradientTransform="matrix(3.9148041,0,0,3.8925101,-2535.4732,201.2442)">
+      <stop
+         offset="0"
+         stop-color="#00a5f0"
+         id="stop3" />
+      <stop
+         offset="1"
+         stop-color="#00d7d7"
+         id="stop5" />
+    </linearGradient>
+    <linearGradient
+       id="b"
+       x1="945.69141"
+       y1="-66.16272"
+       x2="1071.1722"
+       y2="-66.16272"
+       xlink:href="#b"
+       gradientTransform="matrix(4.1761513,0,0,3.6489135,-3853.1512,201.2442)"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0"
+         stop-color="#00a5f0"
+         id="stop8" />
+      <stop
+         offset="1"
+         stop-color="#00d7d7"
+         id="stop10" />
+    </linearGradient>
+    <linearGradient
+       id="c"
+       x1="0.25379357"
+       y1="-66.160469"
+       x2="125.73051"
+       y2="-66.160469"
+       xlink:href="#c"
+       gradientTransform="matrix(4.1762922,0,0,3.6487903,95.096935,201.2442)"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0"
+         stop-color="#00a5f0"
+         id="stop13" />
+      <stop
+         offset="1"
+         stop-color="#00d7d7"
+         id="stop15" />
+    </linearGradient>
+    <linearGradient
+       id="d"
+       x1="401.25339"
+       y1="-58.440735"
+       x2="543.34784"
+       y2="-58.440735"
+       xlink:href="#d"
+       gradientTransform="matrix(3.6873239,0,0,4.1326487,-1383.3018,201.31056)"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0"
+         stop-color="#00a5f0"
+         id="stop18" />
+      <stop
+         offset="1"
+         stop-color="#00d7d7"
+         id="stop20" />
+    </linearGradient>
+    <linearGradient
+       id="e"
+       x1="-48.562206"
+       y1="-73.623848"
+       x2="84.910027"
+       y2="-73.623848"
+       xlink:href="#e"
+       gradientTransform="matrix(3.9259095,0,0,3.881499,285.41794,247.21539)"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0"
+         stop-color="#00a5f0"
+         id="stop23" />
+      <stop
+         offset="1"
+         stop-color="#00d7d7"
+         id="stop25" />
+    </linearGradient>
+  </defs>
+  <path
+     d="m 415.23845,201.31839 a 58.28917,58.28917 0 0 0 -58.55461,57.88709 58.554618,58.554618 0 0 0 117.10923,0 58.28917,58.28917 0 0 0 -58.55462,-57.88709 z m 0,88.46041 a 30.577221,30.577221 0 1 1 30.92465,-30.57332 30.748982,30.748982 0 0 1 -30.92465,30.57332 z"
+     id="path30"
+     inkscape:connector-curvature="0"
+     style="fill:url(#a);stroke-width:3.90364122"
+     inkscape:export-filename="C:\Users\suitedoalex\sites\neon-logo-4.png"
+     inkscape:export-xdpi="74.725548"
+     inkscape:export-ydpi="74.725548" />
+  <path
+     d="m 553.97386,201.31839 a 65.971536,65.971536 0 0 0 -66.24479,65.507 64.695045,64.695045 0 0 0 19.38158,46.26986 13.924288,13.924288 0 0 0 19.5182,0 13.549539,13.549539 0 0 0 0,-19.31522 37.865319,37.865319 0 0 1 0,-53.99126 38.934917,38.934917 0 0 1 54.61194,0 37.865319,37.865319 0 0 1 0,53.99126 13.545635,13.545635 0 0 0 0,19.31132 13.924288,13.924288 0 0 0 19.51821,0 64.695045,64.695045 0 0 0 19.46746,-46.26596 65.971536,65.971536 0 0 0 -66.2526,-65.507 z"
+     id="path32"
+     inkscape:connector-curvature="0"
+     style="fill:url(#b);stroke-width:3.90364122"
+     inkscape:export-filename="C:\Users\suitedoalex\sites\neon-logo-4.png"
+     inkscape:export-xdpi="74.725548"
+     inkscape:export-ydpi="74.725548" />
+  <path
+     d="m 161.34563,201.31839 a 65.971536,65.971536 0 0 0 -66.248695,65.507 64.695045,64.695045 0 0 0 19.377675,46.26205 13.924288,13.924288 0 0 0 19.51821,0 13.549539,13.549539 0 0 0 0,-19.31521 37.865319,37.865319 0 0 1 0,-53.99517 38.938821,38.938821 0 0 1 54.61584,0 37.865319,37.865319 0 0 1 0,53.99517 13.549539,13.549539 0 0 0 0,19.31521 13.924288,13.924288 0 0 0 19.51821,0 64.695045,64.695045 0 0 0 19.46746,-46.26205 65.971536,65.971536 0 0 0 -66.2487,-65.507 z"
+     id="path34"
+     inkscape:connector-curvature="0"
+     style="fill:url(#c);stroke-width:3.90364122"
+     inkscape:export-filename="C:\Users\suitedoalex\sites\neon-logo-4.png"
+     inkscape:export-xdpi="74.725548"
+     inkscape:export-ydpi="74.725548" />
+  <path
+     d="m 341.57674,236.7088 a 13.545635,13.545635 0 0 0 -0.42159,-19.30741 58.679534,58.679534 0 0 0 -99.04318,41.79629 58.679534,58.679534 0 0 0 99.04318,41.79628 13.545635,13.545635 0 0 0 0.42159,-19.30741 13.924288,13.924288 0 0 0 -19.5182,-0.41378 31.178382,31.178382 0 0 1 -43.4202,-0.60507 30.327388,30.327388 0 0 1 0,-42.94005 31.178382,31.178382 0 0 1 43.4202,-0.60507 13.920384,13.920384 0 0 0 19.5182,-0.41769 z"
+     id="path36"
+     inkscape:connector-curvature="0"
+     style="fill:url(#d);stroke-width:3.90364122"
+     inkscape:export-filename="C:\Users\suitedoalex\sites\neon-logo-4.png"
+     inkscape:export-xdpi="74.725548"
+     inkscape:export-ydpi="74.725548" />
+  <ellipse
+     cx="299.22119"
+     cy="260.86255"
+     rx="13.803275"
+     ry="13.64713"
+     transform="rotate(-0.317)"
+     id="ellipse38"
+     style="fill:url(#e);stroke-width:3.90364122"
+     inkscape:export-filename="C:\Users\suitedoalex\sites\neon-logo-4.png"
+     inkscape:export-xdpi="74.725548"
+     inkscape:export-ydpi="74.725548" />
+</svg>

@@ -78,7 +78,7 @@ export function ContactSection() {
             Desenvolvido por Tzolkin
           </p>
           <p className="text-[12px]" style={{ color: "rgba(255,255,255,0.45)" }}>
-            Belo Horizonte, MG · 18 de Julho de 2026
+            Belo Horizonte, MG · 01 de Agosto de 2026
           </p>
         </div>
       </div>

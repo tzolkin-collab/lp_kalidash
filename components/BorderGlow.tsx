@@ -79,7 +79,7 @@ const BorderGlow: React.FC<BorderGlowProps> = ({
   glowIntensity = 1.0,
   coneSpread = 25,
   animated = false,
-  colors = ['#c084fc', '#f472b6', '#38bdf8'],
+  colors = ['#d46803', '#e97e05', '#f18f0e'],
   fillOpacity = 0.5,
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -135,13 +135,18 @@ const BorderGlow: React.FC<BorderGlowProps> = ({
     card.style.setProperty('--cursor-angle', `${angleStart}deg`);
 
     animateValue({ duration: 500, onUpdate: v => card.style.setProperty('--edge-proximity', `${v}`) });
-    animateValue({ ease: easeInCubic, duration: 1500, end: 50, onUpdate: v => {
-      card.style.setProperty('--cursor-angle', `${(angleEnd - angleStart) * (v / 100) + angleStart}deg`);
-    }});
-    animateValue({ ease: easeOutCubic, delay: 1500, duration: 2250, start: 50, end: 100, onUpdate: v => {
-      card.style.setProperty('--cursor-angle', `${(angleEnd - angleStart) * (v / 100) + angleStart}deg`);
-    }});
-    animateValue({ ease: easeInCubic, delay: 2500, duration: 1500, start: 100, end: 0,
+    animateValue({
+      ease: easeInCubic, duration: 1500, end: 50, onUpdate: v => {
+        card.style.setProperty('--cursor-angle', `${(angleEnd - angleStart) * (v / 100) + angleStart}deg`);
+      }
+    });
+    animateValue({
+      ease: easeOutCubic, delay: 1500, duration: 2250, start: 50, end: 100, onUpdate: v => {
+        card.style.setProperty('--cursor-angle', `${(angleEnd - angleStart) * (v / 100) + angleStart}deg`);
+      }
+    });
+    animateValue({
+      ease: easeInCubic, delay: 2500, duration: 1500, start: 100, end: 0,
       onUpdate: v => card.style.setProperty('--edge-proximity', `${v}`),
       onEnd: () => card.classList.remove('sweep-active'),
     });
