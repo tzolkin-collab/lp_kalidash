@@ -1,7 +1,10 @@
+"use client";
+
 import { FadeIn } from "@/app/components/effects/FadeIn";
 import { BlurText } from "@/app/components/effects/BlurText";
 import ShinyText from "@/app/components/effects/ShinyText";
 import ScrollStack, { ScrollStackItem } from "@/app/components/effects/scroll-stack";
+import { useState, useEffect } from "react";
 
 const DELIVERABLES = [
   {
@@ -69,6 +72,15 @@ const DELIVERABLES = [
 ];
 
 export function ScopeSection() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize(); // Set initial value
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <section id="escopo" className="relative py-15 sm:py-32">
 
@@ -102,13 +114,13 @@ export function ScopeSection() {
         <div className="mt-8">
           <ScrollStack
             useWindowScroll={true}
-            itemDistance={20}
-            itemScale={0.03}
-            itemStackDistance={20}
-            stackPosition="15%"
+            itemDistance={isMobile ? 12 : 20}
+            itemScale={isMobile ? 0.045 : 0.03}
+            itemStackDistance={isMobile ? 12 : 20}
+            stackPosition={isMobile ? "10%" : "15%"}
             scaleEndPosition="5%"
-            baseScale={0.92}
-            blurAmount={1.2}
+            baseScale={isMobile ? 0.95 : 0.92}
+            blurAmount={isMobile ? 0 : 1.2}
           >
             {DELIVERABLES.map(({ number, title, description, icon }) => (
               <ScrollStackItem key={number}>

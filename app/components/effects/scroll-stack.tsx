@@ -189,23 +189,24 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
             }
 
             const newTransform = {
-                translateY: Math.round(translateY * 100) / 100,
-                scale: Math.round(scale * 1000) / 1000,
-                rotation: Math.round(rotation * 100) / 100,
-                blur: Math.round(blur * 100) / 100
+                translateY: translateY,
+                scale: scale,
+                rotation: rotation,
+                blur: blur
             };
 
             const lastTransform = lastTransformsRef.current.get(i);
             const hasChanged =
                 !lastTransform ||
-                Math.abs(lastTransform.translateY - newTransform.translateY) > 0.1 ||
+                Math.abs(lastTransform.translateY - newTransform.translateY) > 0.05 ||
                 Math.abs(lastTransform.scale - newTransform.scale) > 0.001 ||
-                Math.abs(lastTransform.rotation - newTransform.rotation) > 0.1 ||
-                Math.abs(lastTransform.blur - newTransform.blur) > 0.1;
+                Math.abs(lastTransform.rotation - newTransform.rotation) > 0.05 ||
+                Math.abs(lastTransform.blur - newTransform.blur) > 0.05;
 
             if (hasChanged) {
-                const transform = `translate3d(0, ${newTransform.translateY}px, 0) scale(${newTransform.scale}) rotate(${newTransform.rotation}deg)`;
-                const filter = newTransform.blur > 0 ? `blur(${newTransform.blur}px)` : '';
+                // Fixed precision string to avoid layout thrashing
+                const transform = `translate3d(0, ${newTransform.translateY.toFixed(2)}px, 0) scale(${newTransform.scale.toFixed(4)}) rotate(${newTransform.rotation.toFixed(2)}deg)`;
+                const filter = newTransform.blur > 0 ? `blur(${newTransform.blur.toFixed(2)}px)` : '';
 
                 card.style.transform = transform;
                 card.style.filter = filter;
@@ -306,9 +307,10 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
             if (i < cards.length - 1) {
                 card.style.marginBottom = `${itemDistance}px`;
             }
-            // willChange apenas no desktop — no mobile não há blur e o custo de camadas compositing é alto
             if (!isMobileDevice()) {
                 card.style.willChange = 'transform, filter';
+            } else {
+                card.style.willChange = 'transform';
             }
             card.style.transformOrigin = 'top center';
             card.style.backfaceVisibility = 'hidden';
