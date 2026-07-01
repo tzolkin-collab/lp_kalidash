@@ -1,4 +1,5 @@
 import { CHECKOUT_URL } from "@/app/utilities/constants";
+import { TrackedLink } from "@/app/components/TrackedLink";
 import { BlurText } from "@/app/components/effects/BlurText";
 import { FadeIn } from "@/app/components/effects/FadeIn";
 import { CountUp } from "@/app/components/effects/CountUp";
@@ -141,16 +142,17 @@ export function HeroSection() {
           {/* CTA */}
           <FadeIn delay={700} duration={700} fromY={16} scale={0.97} animateOn="mount">
             <div className="flex items-center gap-4 flex-wrap">
-              <a
+              <TrackedLink
                 href={CHECKOUT_URL}
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg bg-gold-primary text-[#f3edf8] font-bold text-[15px] hover:bg-[#fbbf24] transition-colors duration-150"
+                trackEvent={{ event: "cta_garantir_vaga", location: "hero" }}
+                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg bg-gold-vivid text-[#f3edf8] font-bold text-[15px] hover:bg-gold-secondary transition-colors duration-150"
                 style={{ animation: "pulse-gold 2.4s cubic-bezier(0.4,0,0.6,1) infinite" }}
               >
                 Garantir minha vaga
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
-              </a>
+              </TrackedLink>
             </div>
           </FadeIn>
 

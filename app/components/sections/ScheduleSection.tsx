@@ -70,7 +70,7 @@ export function ScheduleSection() {
           >
             <BlurText text="Um sábado de pura" wordDelay={50} duration={650} />
             <br />
-            <BlurText text="execução prática e networking." wordDelay={50} duration={650} className="[color:rgba(124,58,237,0.9)]" />
+            <BlurText text="execução prática e networking." wordDelay={50} duration={650} className="text-[rgba(124,58,237,0.9)]" />
           </h2>
         </div>
 
@@ -79,7 +79,7 @@ export function ScheduleSection() {
 
           {/* Linha vertical */}
           <div
-            className="absolute left-[15px] sm:left-[7.5rem] top-0 bottom-0 w-px"
+            className="absolute left-[15px] sm:left-30 top-0 bottom-0 w-px"
             style={{ background: "linear-gradient(180deg, transparent, rgba(255,255,255,0.08) 10%, rgba(255,255,255,0.08) 90%, transparent)" }}
           />
 
@@ -89,7 +89,7 @@ export function ScheduleSection() {
                 <div className="relative flex pl-10 sm:pl-0 gap-0 pb-8 last:pb-0">
 
                   {/* Horário (Desktop) */}
-                  <div className="w-24 flex-shrink-0 pt-4 hidden sm:block text-right pr-6">
+                  <div className="w-24 shrink-0 pt-4 hidden sm:block text-right pr-6">
                     <span
                       className="text-[13px] font-mono font-bold tracking-wider"
                       style={{ color: highlight ? "#a855f7" : "rgba(255,255,255,0.4)" }}
@@ -99,9 +99,9 @@ export function ScheduleSection() {
                   </div>
 
                   {/* Dot na linha */}
-                  <div className="absolute left-[8px] top-6 sm:top-auto sm:relative sm:left-auto flex items-start justify-center sm:w-12 flex-shrink-0 sm:pt-4">
+                  <div className="absolute left-[8px] top-6 sm:top-auto sm:relative sm:left-auto flex items-start justify-center sm:w-12 shrink-0 sm:pt-4">
                     <div
-                      className="w-3.5 h-3.5 rounded-full flex-shrink-0 z-10 border-2 transition-all"
+                      className="w-3.5 h-3.5 rounded-full shrink-0 z-10 border-2 transition-all"
                       style={{
                         background: highlight ? "#7c3aed" : "#0d0911",
                         borderColor: highlight ? "#a855f7" : "rgba(255,255,255,0.2)",

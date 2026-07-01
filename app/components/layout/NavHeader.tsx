@@ -1,4 +1,5 @@
 import { CHECKOUT_URL } from "@/app/utilities/constants";
+import { TrackedLink } from "@/app/components/TrackedLink";
 import Image from "next/image";
 
 export function NavHeader() {
@@ -36,12 +37,13 @@ export function NavHeader() {
       {/* Ações à direita */}
       <div className="flex items-center gap-3 mr-3">
         <CountdownBadge />
-        <a
+        <TrackedLink
           href={CHECKOUT_URL}
+          trackEvent={{ event: "cta_garantir_vaga", location: "nav" }}
           className="px-4 py-1.5 rounded-md bg-[#7c3aed] text-white text-xs font-semibold hover:bg-[#6d28d9] hover:scale-110 transition-all duration-150"
         >
           Garantir vaga
-        </a>
+        </TrackedLink>
       </div>
     </nav>
   );

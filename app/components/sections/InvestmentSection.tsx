@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { FadeIn } from "@/app/components/effects/FadeIn";
 import { BlurText } from "@/app/components/effects/BlurText";
 import { CHECKOUT_URL } from "@/app/utilities/constants";
+import { TrackedLink } from "@/app/components/TrackedLink";
 import ShinyText from "../effects/ShinyText";
 import BorderGlow from "@/app/components/effects/BorderGlow";
 
@@ -112,11 +113,12 @@ export function InvestmentSection() {
         ))}
       </ul>
 
-      <a
+      <TrackedLink
         href={CHECKOUT_URL}
-        className="w-full flex items-center justify-center gap-2 py-3.5 rounded-lg font-bold text-[14px] text-[#f3edf8] transition-colors duration-150 hover:bg-[#fbbf24]"
+        trackEvent={{ event: "cta_garantir_vaga", location: "investimento" }}
+        className="w-full flex items-center justify-center gap-2 py-3.5 rounded-lg font-bold text-[14px] text-[#f3edf8] transition-colors duration-150 hover:bg-gold-vivid"
         style={{
-          background: "#f59e0b",
+          background: "rgb(245, 158, 11)",
           animation: "pulse-gold 2.4s cubic-bezier(0.4,0,0.6,1) infinite",
         }}
       >
@@ -124,7 +126,7 @@ export function InvestmentSection() {
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <path d="M5 12h14M12 5l7 7-7 7" />
         </svg>
-      </a>
+      </TrackedLink>
     </div>
   );
 
@@ -207,7 +209,7 @@ export function InvestmentSection() {
           >
             <BlurText text="Uma estrutura de milhares de reais" wordDelay={45} duration={650} />
             <br />
-            <BlurText text="por um investimento único." wordDelay={45} duration={650} className="[color:rgba(124,58,237,0.9)]" />
+            <BlurText text="por um investimento único." wordDelay={45} duration={650} className="[text-rgba(124,58,237,0.9)]" />
           </h2>
           <FadeIn delay={400} fromY={12} duration={600}>
             <p className="mt-5 text-[15px] leading-relaxed" style={{ color: "rgba(255,255,255,0.45)" }}>
@@ -228,8 +230,8 @@ export function InvestmentSection() {
             <FadeIn delay={100} duration={800} fromY={24} scale={0.97} className="md:col-span-1 relative z-30">
               {isMobile ? (
                 <div
-                  className="relative w-full rounded-[28px] border bg-[#130e22]/90 backdrop-blur-md"
-                  style={{ borderColor: "rgba(255,255,255,0.08)" }}
+                  className="relative w-full rounded-[28px] border bg-[#0a0a0a]/60 backdrop-blur-xl"
+                  style={{ borderColor: "rgba(245,158,11,0.3)", boxShadow: "inset 0 0 20px rgba(245,158,11,0.05)" }}
                 >
                   {cardContent}
                 </div>
@@ -237,7 +239,7 @@ export function InvestmentSection() {
                 <BorderGlow
                   className="relative w-full"
                   colors={['#d46803', '#e97e05', '#f18f0e']}
-                  backgroundColor="colors={['#c084fc', '#f472b6', '#38bdf8']}"
+                  backgroundColor="#0a0a0a"
                   borderRadius={28}
                   animated={true}
                   glowRadius={1.0}
@@ -288,7 +290,7 @@ function LockedCard({ lote, name, price }: { lote: string; name: string; price: 
         WebkitBackdropFilter: "blur(2px)",
       }}
     >
-      <div className="inline-flex items-center gap-1.5 text-[rgba(255,255,255,0.45)] text-[11px] font-medium">
+      <div className="inline-flex items-center gap-1.5 text-[rgba(2 55,255,255,0.45)] text-[11px] font-medium">
         <LockIcon />
         <span className="uppercase tracking-wider">Indisponível</span>
       </div>
