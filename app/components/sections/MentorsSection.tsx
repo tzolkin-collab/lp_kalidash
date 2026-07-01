@@ -54,15 +54,40 @@ const CAROUSEL_ITEMS = [
 ];
 
 // Logos oficiais
-const BRANDS = [
-  { name: "FDC", file: "/logos/new_brands/FDC_idycOR3Cmb_0.png" },
-  { name: "Nexa", file: "/logos/new_brands/Nexa_Resources-logo_brandlogos.net_038950.svg" },
-  { name: "RD Station", file: "/logos/new_brands/RD_Station_idEG-7z5oJ_2.png" },
-  { name: "Danka", file: "/logos/new_brands/danka.svg" },
-  { name: "Neon", file: "/logos/new_brands/neon-logo.svg" },
-  { name: "PicPay", file: "/logos/new_brands/picpay-1.svg" },
-  { name: "SulAmérica", file: "/logos/new_brands/sulamerica-saude-logo.svg" },
-  { name: "Sympla", file: "/logos/new_brands/sympla-seeklogo.png" },
+// Todas as logos ocupam a MESMA caixa base (BRAND_BOX). O `scale` é o único
+// ajuste individual do peso visual de cada marca (1 = tamanho da caixa).
+interface Brand {
+  name: string;
+  file: string;
+  /** Multiplicador visual individual sobre a caixa base. Default 1. */
+  scale?: number;
+  /**
+   * Filtro de cor CSS. Default: "brightness(0) invert(1)" — pinta a logo de
+   * branco monocromático. Use "none" para arquivos que já vêm claros sobre
+   * fundo escuro (ex.: Danka, que tem fundo preto + texto branco embutidos).
+   */
+  filter?: string;
+  /** Remove o brilho animado (shimmer) sobre a logo. */
+  disableShimmer?: boolean;
+}
+
+const DEFAULT_FILTER = "brightness(0) invert(1)";
+
+// Dimensões da caixa uniforme [mobile, desktop] — em px.
+const BRAND_BOX = { h: [32, 40], w: [96, 128] } as const;
+
+// `scale` calibrado por logo para igualar a altura visual real (ink) de cada
+// marca, compensando as margens transparentes embutidas em cada arquivo
+// (ex.: Neon tem só ~16% de tinta; PicPay/Sympla preenchem 100%).
+const BRANDS: Brand[] = [
+  { name: "FDC", file: "/logos/new_brands/FDC_idycOR3Cmb_0.png", scale: 1 },
+  { name: "Nexa", file: "/logos/new_brands/Nexa_Resources-logo_brandlogos.net_038950.svg", scale: 0.95 },
+  { name: "RD Station", file: "/logos/new_brands/RD_Station_idEG-7z5oJ_2.png", scale: 1.2 },
+  { name: "Danka", file: "/logos/new_brands/danka.svg", scale: 0.7, filter: "none", disableShimmer: true },
+  { name: "Neon", file: "/logos/new_brands/neon-logo.svg", scale: 4.2 },
+  { name: "PicPay", file: "/logos/new_brands/picpay-1.svg", scale: 0.7 },
+  { name: "SulAmérica", file: "/logos/new_brands/sulamerica-saude-logo.svg", scale: 2.5 },
+  { name: "Sympla", file: "/logos/new_brands/sympla-seeklogo.png", scale: 0.7 },
 ];
 
 export function MentorsSection() {
@@ -132,10 +157,10 @@ export function MentorsSection() {
               coneSpread={20}
               className="relative w-full"
             >
-              <div className="relative w-full bg-gradient-to-br from-[#121212] to-[#050505] min-h-[850px] md:min-h-[500px] overflow-hidden rounded-[32px] border border-white/5">
+              <div className="relative w-full bg-linear-to-br from-[#121212] to-[#050505] min-h-[850px] md:min-h-[500px] overflow-hidden rounded-[32px] border border-white/5">
 
                 {/* Background ambient glow */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#7c3aed]/5 to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-linear-to-t from-[#7c3aed]/5 to-transparent pointer-events-none" />
 
                 {visibleItems.map((item, i) => (
                   <div
@@ -180,7 +205,7 @@ export function MentorsSection() {
                         <ul className="flex flex-col gap-3.5 mt-2">
                           {item.highlights.map((highlight, idx) => (
                             <li key={idx} className="flex items-start gap-3">
-                              <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-purple-500 flex-shrink-0 shadow-[0_0_8px_rgba(168,85,247,0.8)]" />
+                              <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-purple-500 shrink-0 shadow-[0_0_8px_rgba(168,85,247,0.8)]" />
                               <span className="text-[14px] leading-snug text-white/70">
                                 {highlight}
                               </span>
@@ -233,29 +258,35 @@ export function MentorsSection() {
               />
 
               <div className="flex items-center gap-12 w-max animate-ticker">
-                {[...BRANDS, ...BRANDS].map(({ name, file }, i) => (
-                  <div key={i} className="relative h-6 w-auto shrink-0 flex items-center justify-center">
+                {[...BRANDS, ...BRANDS].map(({ name, file, scale = 1, filter, disableShimmer }, i) => (
+                  <div
+                    key={i}
+                    className="relative h-8 md:h-10 w-24 md:w-32 shrink-0 flex items-center justify-center"
+                    style={{ transform: `scale(${scale})` }}
+                  >
                     <img
                       src={file}
                       alt={name}
-                      className="h-full w-auto object-contain relative z-0"
-                      style={name === "Danka" ? { filter: "invert(1)", opacity: 0.5 } : { filter: "brightness(0) invert(1)", opacity: 0.5 }}
+                      className="max-h-full max-w-full w-auto object-contain relative z-0"
+                      style={{ filter: filter ?? DEFAULT_FILTER, opacity: 0.5 }}
                     />
-                    <div
-                      className="absolute inset-0 z-10 pointer-events-none"
-                      style={{
-                        maskImage: `url(${file})`,
-                        maskSize: "contain",
-                        maskRepeat: "no-repeat",
-                        maskPosition: "center",
-                        WebkitMaskImage: `url(${file})`,
-                        WebkitMaskSize: "contain",
-                        WebkitMaskRepeat: "no-repeat",
-                        WebkitMaskPosition: "center",
-                      }}
-                    >
-                      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/60 to-transparent animate-shimmer-logo" />
-                    </div>
+                    {!disableShimmer && (
+                      <div
+                        className="absolute inset-0 z-10 pointer-events-none"
+                        style={{
+                          maskImage: `url(${file})`,
+                          maskSize: "contain",
+                          maskRepeat: "no-repeat",
+                          maskPosition: "center",
+                          WebkitMaskImage: `url(${file})`,
+                          WebkitMaskSize: "contain",
+                          WebkitMaskRepeat: "no-repeat",
+                          WebkitMaskPosition: "center",
+                        }}
+                      >
+                        <div className="absolute top-0 left-0 w-full h-full bg-linear-to-r from-transparent via-white/60 to-transparent animate-shimmer-logo" />
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
