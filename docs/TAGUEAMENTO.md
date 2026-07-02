@@ -18,10 +18,11 @@ GTM e o que precisa ser configurado **dentro do GTM** (lado Kalidash/Carol).
 
 ---
 
-## O evento que a LP dispara
+## Os eventos que a LP dispara
 
-Existe **um único evento**: `cta_garantir_vaga`, disparado em todos os 5 CTAs
-"Garantir vaga" da página.
+### `cta_garantir_vaga` — conversão principal
+
+Disparado em todos os 5 CTAs "Garantir vaga" da página.
 
 Payload enviado ao `dataLayer`:
 
@@ -40,6 +41,19 @@ Payload enviado ao `dataLayer`:
 - `value` / `currency` / `lote` são **iguais em todos os CTAs** — todos vendem o
   mesmo ingresso (lote 01, R$497). Isso é centralizado em `CHECKOUT_LOTE` no
   arquivo `app/utilities/track.ts`; não existe valor solto por componente.
+
+### `whatsapp_click` — CTA alternativo
+
+Disparado no botão "Falar no WhatsApp" (seção de contato), que abre o `wa.me`
+numa nova aba com mensagem padrão pré-preenchida.
+
+```js
+{ event: "whatsapp_click", location: "contato" }
+```
+
+- **Não** carrega `value`/`currency` — é intenção de contato, não conversão de
+  compra. No GTM, sugerido mapear como um evento GA4 custom `whatsapp_click`
+  (e, se quiser, `Contact` no Meta).
 
 ---
 

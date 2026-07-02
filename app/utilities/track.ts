@@ -13,14 +13,20 @@ declare global {
 
 export type CtaLocation = "nav" | "sticky" | "hero" | "investimento" | "contato";
 
-export type TrackEvent = {
-  event: "cta_garantir_vaga";
-  location: CtaLocation;
-  lote?: string;
-  // valor do lote em reais — usado pelo GTM como `value` em GA4/Meta
-  value?: number;
-  currency?: "BRL";
-};
+export type TrackEvent =
+  | {
+      event: "cta_garantir_vaga";
+      location: CtaLocation;
+      lote?: string;
+      // valor do lote em reais — usado pelo GTM como `value` em GA4/Meta
+      value?: number;
+      currency?: "BRL";
+    }
+  | {
+      // clique no CTA alternativo de WhatsApp (fallback ao checkout)
+      event: "whatsapp_click";
+      location: "contato";
+    };
 
 // Todo CTA vende o mesmo ingresso (lote 01 — R$497). Centralizar aqui garante
 // que GA4/Meta recebam `value`/`currency`/`lote` idênticos independente de qual
@@ -53,7 +59,9 @@ export function track(payload: TrackEvent, onComplete?: () => void) {
   }
 
   window.dataLayer = window.dataLayer || [];
-  const enriched = { ...CHECKOUT_LOTE, ...payload };
+  // Só o evento de checkout carrega value/currency/lote; whatsapp_click não é conversão de compra.
+  const enriched =
+    payload.event === "cta_garantir_vaga" ? { ...CHECKOUT_LOTE, ...payload } : { ...payload };
 
   if (!onComplete) {
     window.dataLayer.push(enriched);
