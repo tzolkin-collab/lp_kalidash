@@ -6,6 +6,12 @@ export const LOTE_ONE_PRICE = "R$ 497";
 
 export const CHECKOUT_URL = "https://www.sympla.com.br/evento/imersao-presencial-de-claude/3474828";
 
+// Endpoint que recebe o lead capturado no pop-up (nome/email/whatsapp) antes do
+// redirect ao checkout — ex.: form do ActiveCampaign/RD da Kalidash. Vazio =
+// nenhum POST é feito; o lead segue existindo como evento `lead_submit` no GTM.
+// ⚠️ Aguardando a Carol definir o CRM de destino.
+export const LEAD_ENDPOINT = "";
+
 // WhatsApp — CTA alternativo (fallback ao checkout). Formato wa.me padrão com
 // mensagem padrão pré-preenchida. Número: +55 31 99388-6714.
 const WHATSAPP_NUMBER = "5531993886714";

@@ -1,7 +1,7 @@
 "use client";
 
-import { LOTE_ONE_DEADLINE, CHECKOUT_URL } from "@/app/utilities/constants";
-import { TrackedLink } from "@/app/components/TrackedLink";
+import { LOTE_ONE_DEADLINE } from "@/app/utilities/constants";
+import { LeadCaptureCta } from "@/app/components/LeadCaptureCta";
 import { useCountdown } from "@/app/utilities/use-countdown";
 
 function pad(value: number): string {
@@ -27,13 +27,12 @@ export function StickyHeader() {
           {pad(hours)}h {pad(minutes)}m {pad(seconds)}s
         </span>{" "}
         —{" "}
-        <TrackedLink
-          href={CHECKOUT_URL}
-          trackEvent={{ event: "cta_garantir_vaga", location: "sticky" }}
-          className="underline underline-offset-2 text-gold-vivid hover:text-gold-primary transition-colors duration-200"
+        <LeadCaptureCta
+          location="sticky"
+          className="underline underline-offset-2 text-gold-vivid hover:text-gold-primary transition-colors duration-200 cursor-pointer"
         >
           garantir vaga
-        </TrackedLink>
+        </LeadCaptureCta>
       </p>
     </header>
   );

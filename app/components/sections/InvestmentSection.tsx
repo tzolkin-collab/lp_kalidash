@@ -4,8 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { FadeIn } from "@/app/components/effects/FadeIn";
 import { BlurText } from "@/app/components/effects/BlurText";
-import { CHECKOUT_URL } from "@/app/utilities/constants";
-import { TrackedLink } from "@/app/components/TrackedLink";
+import { LeadCaptureCta } from "@/app/components/LeadCaptureCta";
 import ShinyText from "../effects/ShinyText";
 import BorderGlow from "@/app/components/effects/BorderGlow";
 
@@ -113,10 +112,9 @@ export function InvestmentSection() {
         ))}
       </ul>
 
-      <TrackedLink
-        href={CHECKOUT_URL}
-        trackEvent={{ event: "cta_garantir_vaga", location: "investimento" }}
-        className="w-full flex items-center justify-center gap-2 py-3.5 rounded-lg font-bold text-[14px] text-[#f3edf8] transition-colors duration-150 hover:bg-gold-vivid"
+      <LeadCaptureCta
+        location="investimento"
+        className="w-full flex items-center justify-center gap-2 py-3.5 rounded-lg font-bold text-[14px] text-[#f3edf8] transition-colors duration-150 hover:bg-gold-vivid cursor-pointer"
         style={{
           background: "rgb(245, 158, 11)",
           animation: "pulse-gold 2.4s cubic-bezier(0.4,0,0.6,1) infinite",
@@ -126,7 +124,7 @@ export function InvestmentSection() {
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <path d="M5 12h14M12 5l7 7-7 7" />
         </svg>
-      </TrackedLink>
+      </LeadCaptureCta>
     </div>
   );
 

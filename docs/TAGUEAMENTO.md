@@ -20,9 +20,12 @@ GTM e o que precisa ser configurado **dentro do GTM** (lado Kalidash/Carol).
 
 ## Os eventos que a LP dispara
 
-### `cta_garantir_vaga` — conversão principal
+### `cta_garantir_vaga` — clique no CTA
 
-Disparado em todos os 5 CTAs "Garantir vaga" da página.
+Disparado em todos os 5 CTAs "Garantir vaga" da página. Desde o pop-up de
+captura (jul/2026), o CTA **não vai mais direto ao checkout**: o clique dispara
+este evento e abre o pop-up de lead (nome/email/WhatsApp). O payload e a
+semântica seguem idênticos — nada a mudar nas tags já configuradas.
 
 Payload enviado ao `dataLayer`:
 
@@ -41,6 +44,29 @@ Payload enviado ao `dataLayer`:
 - `value` / `currency` / `lote` são **iguais em todos os CTAs** — todos vendem o
   mesmo ingresso (lote 01, R$497). Isso é centralizado em `CHECKOUT_LOTE` no
   arquivo `app/utilities/track.ts`; não existe valor solto por componente.
+
+### `lead_submit` — lead capturado no pop-up
+
+Disparado quando o visitante preenche o pop-up (nome/email/WhatsApp) e clica em
+Confirmar — logo antes do redirect ao checkout do Sympla. Etapa mais funda do
+funil que o clique no CTA.
+
+```js
+{
+  event: "lead_submit",
+  location: "nav" | "sticky" | "hero" | "investimento" | "contato",
+  lote: "01",
+  value: 497,
+  currency: "BRL"
+}
+```
+
+- Os **dados pessoais não vão para o dataLayer** — só o evento. O lead em si é
+  enviado ao CRM via `LEAD_ENDPOINT` (`app/utilities/constants.ts`), ainda
+  **pendente de definição pela Kalidash** (qual CRM/form receberá os leads).
+- No GTM, sugerido mapear como **`generate_lead`** (GA4) e **`Lead`** (Meta).
+- O redirect ao Sympla é segurado pelo `eventCallback` (mesma mecânica descrita
+  abaixo), então a conversão não se perde na navegação.
 
 ### `whatsapp_click` — CTA alternativo
 
@@ -93,11 +119,13 @@ CTA que redireciona tem um problema clássico: se o evento é empurrado e a pág
 descarrega no mesmo instante, o beacon do GA4/Meta pode ser cancelado e a
 conversão **se perde**.
 
-A LP resolve isso em `app/components/TrackedLink.tsx` + `app/utilities/track.ts`:
+A LP resolve isso em `app/utilities/track.ts` (usado pelo `LeadPopup` no
+`lead_submit` e pelo `TrackedLink` em âncoras que ainda navegam):
 
-- No clique em navegação na mesma aba, o redirect é **segurado**
-  (`e.preventDefault()`) e só ocorre quando o GTM confirma o disparo das tags
-  (`eventCallback`).
+- Quando o evento antecede uma navegação na mesma aba, o redirect é **segurado**
+  e só ocorre quando o GTM confirma o disparo das tags (`eventCallback`).
+  Hoje isso acontece no **submit do pop-up** (rumo ao Sympla); o clique no CTA
+  não navega mais, então usa push simples.
 - Há um **fallback de 1200ms** (`eventTimeout` + `setTimeout`): se nenhuma tag
   estiver mapeada ao evento, ou o GTM estiver bloqueado por ad-blocker, o usuário
   segue para o checkout mesmo assim. Ninguém fica preso.
@@ -134,6 +162,8 @@ para confirmar que as tags disparam no evento.
 |---|---|
 | `app/layout.tsx` | Carrega o container GTM e o script Utmify |
 | `app/utilities/track.ts` | Helper `track()`, `CHECKOUT_LOTE`, dispatch com `eventCallback` |
-| `app/components/TrackedLink.tsx` | Âncora que empurra o evento e segura o redirect |
-| `app/utilities/constants.ts` | `CHECKOUT_URL` (Sympla) e dados do lote |
-| Seções (`Hero`, `Investment`, `Contact`) e layout (`NavHeader`, `StickyHeader`) | Usam `TrackedLink` com o `location` de cada CTA |
+| `app/components/TrackedLink.tsx` | Âncora que empurra o evento e segura o redirect (hoje só o CTA de WhatsApp) |
+| `app/components/LeadCaptureCta.tsx` | Botão "Garantir vaga" — dispara `cta_garantir_vaga` e abre o pop-up |
+| `app/components/LeadPopup.tsx` | Pop-up de captura — dispara `lead_submit` e redireciona ao Sympla |
+| `app/utilities/constants.ts` | `CHECKOUT_URL` (Sympla), `LEAD_ENDPOINT` (CRM, pendente) e dados do lote |
+| Seções (`Hero`, `Investment`, `Contact`) e layout (`NavHeader`, `StickyHeader`) | Usam `LeadCaptureCta` com o `location` de cada CTA |
