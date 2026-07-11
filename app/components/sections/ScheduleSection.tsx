@@ -1,6 +1,7 @@
 import { FadeIn } from "@/app/components/effects/FadeIn";
 import { BlurText } from "@/app/components/effects/BlurText";
 import ShinyText from "../effects/ShinyText";
+import { GlyphRobot } from "@/app/components/effects/GlyphRobot";
 
 const SCHEDULE = [
   {
@@ -49,7 +50,7 @@ const SCHEDULE = [
 
 export function ScheduleSection() {
   return (
-    <section id="cronograma" className="relative py-15 sm:py-32">
+    <section id="cronograma" className="relative py-15 sm:py-32 overflow-hidden">
 
       <div
         aria-hidden="true"
@@ -57,7 +58,19 @@ export function ScheduleSection() {
         style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.06) 30%, rgba(255,255,255,0.06) 70%, transparent)" }}
       />
 
-      <div className="max-w-7xl mx-auto px-6 sm:px-10">
+      <div className="relative max-w-7xl mx-auto px-6 sm:px-10">
+
+        {/* Robô de glifos 3D à direita da timeline (que tem max-w-3xl = 768px),
+            centralizado na altura da seção e ancorado DENTRO do grid do
+            conteúdo para nunca invadir a coluna de texto. Interage com o
+            scroll: materializa ao entrar, desfaz ao sair (scrollMode="assemble").
+            Só aparece em xl+, onde sobra coluna livre (~430px) pra ele. */}
+        <div
+          aria-hidden="true"
+          className="absolute top-1/2 -translate-y-1/2 right-6 sm:right-10 w-[360px] 2xl:w-[400px] aspect-square pointer-events-none select-none hidden xl:block"
+        >
+          <GlyphRobot scrollMode="assemble" className="w-full h-full" />
+        </div>
 
         {/* Header */}
         <div className="mb-16 max-w-2xl">

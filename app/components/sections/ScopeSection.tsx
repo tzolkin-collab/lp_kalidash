@@ -4,6 +4,7 @@ import { FadeIn } from "@/app/components/effects/FadeIn";
 import { BlurText } from "@/app/components/effects/BlurText";
 import ShinyText from "@/app/components/effects/ShinyText";
 import ScrollStack, { ScrollStackItem } from "@/app/components/effects/scroll-stack";
+import { GlyphRain } from "@/app/components/effects/GlyphRain";
 import { useState, useEffect } from "react";
 
 const DELIVERABLES = [
@@ -82,7 +83,7 @@ export function ScopeSection() {
   }, []);
 
   return (
-    <section id="escopo" className="relative py-15 sm:py-32">
+    <section id="escopo" className="relative py-15 sm:py-32 overflow-hidden">
 
       <div
         aria-hidden="true"
@@ -90,7 +91,25 @@ export function ScopeSection() {
         style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.06) 30%, rgba(255,255,255,0.06) 70%, transparent)" }}
       />
 
-      <div className="max-w-7xl mx-auto px-6 sm:px-10">
+      {/* Chuva de glifos na metade direita (o header ocupa a esquerda) —
+          máscara funde o efeito com o fundo nas bordas esquerda/topo/base */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-y-0 right-0 w-[46%] pointer-events-none select-none hidden md:block"
+        style={{
+          opacity: 0.5,
+          maskImage:
+            "linear-gradient(to left, rgba(0,0,0,1) 30%, transparent 96%), linear-gradient(to bottom, transparent 0%, rgba(0,0,0,1) 12%, rgba(0,0,0,1) 88%, transparent 100%)",
+          WebkitMaskImage:
+            "linear-gradient(to left, rgba(0,0,0,1) 30%, transparent 96%), linear-gradient(to bottom, transparent 0%, rgba(0,0,0,1) 12%, rgba(0,0,0,1) 88%, transparent 100%)",
+          maskComposite: "intersect",
+          WebkitMaskComposite: "source-in",
+        }}
+      >
+        <GlyphRain className="w-full h-full" />
+      </div>
+
+      <div className="relative max-w-7xl mx-auto px-6 sm:px-10">
 
         {/* Header */}
         <div className="mb-16 max-w-2xl">
