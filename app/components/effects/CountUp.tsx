@@ -41,6 +41,7 @@ export function CountUp({ value, duration = 1200, delay = 0, className = "" }: C
   useEffect(() => {
     if (!started) return;
     const start = performance.now();
+    let frameId: number;
 
     const tick = (now: number) => {
       const elapsed = now - start;
@@ -48,10 +49,15 @@ export function CountUp({ value, duration = 1200, delay = 0, className = "" }: C
       // Ease-out quart
       const eased = 1 - Math.pow(1 - progress, 4);
       setCurrent(Math.round(eased * num));
-      if (progress < 1) requestAnimationFrame(tick);
+      if (progress < 1) {
+        frameId = requestAnimationFrame(tick);
+      }
     };
 
-    requestAnimationFrame(tick);
+    frameId = requestAnimationFrame(tick);
+    return () => {
+      cancelAnimationFrame(frameId);
+    };
   }, [started, num, duration]);
 
   const display = started ? current : 0;

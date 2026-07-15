@@ -1,8 +1,10 @@
 "use client";
 
-import React, { useLayoutEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useCallback } from 'react';
 import type { ReactNode } from 'react';
 import './scroll-stack.css';
+
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
 // No mobile o Lenis roda um RAF loop infinito que causa jank — usar scroll nativo
 const isMobileDevice = () =>
@@ -195,11 +197,14 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
                 blur: blur
             };
 
+            // Epsilons pequenos o bastante para não quantizar a animação em
+            // degraus visíveis: a escala varia só ~0.05 no total, então guard
+            // de 0.001 permitia ~50 escritas na transição inteira
             const lastTransform = lastTransformsRef.current.get(i);
             const hasChanged =
                 !lastTransform ||
-                Math.abs(lastTransform.translateY - newTransform.translateY) > 0.05 ||
-                Math.abs(lastTransform.scale - newTransform.scale) > 0.001 ||
+                Math.abs(lastTransform.translateY - newTransform.translateY) > 0.02 ||
+                Math.abs(lastTransform.scale - newTransform.scale) > 0.0003 ||
                 Math.abs(lastTransform.rotation - newTransform.rotation) > 0.05 ||
                 Math.abs(lastTransform.blur - newTransform.blur) > 0.05;
 
@@ -240,8 +245,16 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
         getScrollData
     ]);
 
+    // Coalesce: eventos de scroll podem disparar várias vezes por frame
+    // (principalmente no scroll nativo do mobile) — agenda UMA atualização
+    // por frame via rAF em vez de recalcular a cada evento
+    const scrollRafRef = useRef<number | null>(null);
     const handleScroll = useCallback(() => {
-        updateCardTransforms();
+        if (scrollRafRef.current !== null) return;
+        scrollRafRef.current = requestAnimationFrame(() => {
+            scrollRafRef.current = null;
+            updateCardTransforms();
+        });
     }, [updateCardTransforms]);
 
     const setupLenis = useCallback((onReady?: () => void) => {
@@ -292,7 +305,7 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
         });
     }, [handleScroll, useWindowScroll]);
 
-    useLayoutEffect(() => {
+    useIsomorphicLayoutEffect(() => {
         const scroller = scrollerRef.current;
         if (!scroller) return;
 
@@ -360,6 +373,10 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
             }
             if (animationFrameRef.current) {
                 cancelAnimationFrame(animationFrameRef.current);
+            }
+            if (scrollRafRef.current !== null) {
+                cancelAnimationFrame(scrollRafRef.current);
+                scrollRafRef.current = null;
             }
             if (lenisRef.current) {
                 lenisRef.current.destroy();

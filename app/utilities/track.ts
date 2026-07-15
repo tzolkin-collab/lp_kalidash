@@ -33,6 +33,14 @@ export type TrackEvent =
       currency?: "BRL";
     }
   | {
+      // Evento adicional para quando o redirect de fato está acontecendo rumo ao Sympla
+      event: "go_to_sympla";
+      location: CtaLocation;
+      lote?: string;
+      value?: number;
+      currency?: "BRL";
+    }
+  | {
       // clique no CTA alternativo de WhatsApp (fallback ao checkout)
       event: "whatsapp_click";
       location: "contato";
@@ -71,7 +79,7 @@ export function track(payload: TrackEvent, onComplete?: () => void) {
   window.dataLayer = window.dataLayer || [];
   // Só eventos de funil de compra carregam value/currency/lote; whatsapp_click não é conversão de compra.
   const enriched =
-    payload.event === "cta_garantir_vaga" || payload.event === "lead_submit"
+    payload.event === "cta_garantir_vaga" || payload.event === "lead_submit" || payload.event === "go_to_sympla"
       ? { ...CHECKOUT_LOTE, ...payload }
       : { ...payload };
 

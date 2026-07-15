@@ -96,10 +96,11 @@ function buildSolid(): P3[] {
   return pts;
 }
 
-// Rampa de 32 tons — roxo profundo → lavanda quase branca (paleta da LP)
+// Rampa de 32 tons — terracota do Claude (#D97757): sombra em laranja
+// queimado → luz em pêssego quase branco
 const RAMP = Array.from({ length: 32 }, (_, i) => {
   const a = i / 31;
-  return `rgb(${(70 + 150 * a) | 0}, ${(40 + 140 * a) | 0}, ${(180 + 75 * a) | 0})`;
+  return `rgb(${(95 + 160 * a) | 0}, ${(40 + 165 * a) | 0}, ${(25 + 145 * a) | 0})`;
 });
 
 // Luz direcional fixa (normalizada) — de cima/esquerda/frente
@@ -286,7 +287,7 @@ export function GlyphRobot({ className, scrollMode = "none" }: GlyphRobotProps) 
 
           ctx.globalAlpha = alpha;
           if (Math.random() < 0.004) {
-            ctx.fillStyle = "rgb(245,245,255)"; // faísca
+            ctx.fillStyle = "rgb(255,248,240)"; // faísca (branco quente)
           } else {
             ctx.fillStyle = RAMP[Math.min(31, (31 * lightBuf[idx]) | 0)];
           }

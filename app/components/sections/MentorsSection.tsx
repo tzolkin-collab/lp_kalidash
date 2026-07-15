@@ -92,30 +92,13 @@ const BRANDS: Brand[] = [
 
 export function MentorsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 1024);
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  const visibleItems = CAROUSEL_ITEMS.filter(item => !(isMobile && item.id === 'history'));
-
-  useEffect(() => {
-    if (currentIndex >= visibleItems.length && visibleItems.length > 0) {
-      setCurrentIndex(0);
-    }
-  }, [visibleItems.length, currentIndex]);
-
-  useEffect(() => {
-    if (visibleItems.length === 0) return;
     const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % visibleItems.length);
+      setCurrentIndex((prev) => (prev + 1) % CAROUSEL_ITEMS.length);
     }, 7000);
     return () => clearInterval(timer);
-  }, [visibleItems.length]);
+  }, []);
 
   return (
     <section id="mentores" className="relative py-15 sm:py-32">
@@ -162,14 +145,14 @@ export function MentorsSection() {
                 {/* Background ambient glow */}
                 <div className="absolute inset-0 bg-linear-to-t from-[#7c3aed]/5 to-transparent pointer-events-none" />
 
-                {visibleItems.map((item, i) => (
+                {CAROUSEL_ITEMS.map((item, i) => (
                   <div
                     key={item.id}
                     className={`absolute inset-0 transition-all duration-1000 ease-in-out ${currentIndex === i ? 'opacity-100 z-10 translate-y-0' : 'opacity-0 z-0 translate-y-4 pointer-events-none'}`}
                   >
 
                     {/* Full-bleed Image with Infinite Fade */}
-                    <div className={`absolute inset-y-0 ${item.layout === 'image-left' ? 'left-0' : 'right-0'} w-full md:w-[60%] ${item.id === 'history' ? 'hidden md:block' : ''}`}>
+                    <div className={`absolute inset-y-0 ${item.layout === 'image-left' ? 'left-0' : 'right-0'} w-full md:w-[60%]`}>
                       <div
                         className="relative w-full h-full"
                         style={{
@@ -224,7 +207,7 @@ export function MentorsSection() {
           {/* Navigation Dots (Movidos para fora do card) */}
           <FadeIn delay={400} duration={600} fromY={10} className="mt-8 relative z-20">
             <div className="flex gap-3">
-              {visibleItems.map((_, i) => (
+              {CAROUSEL_ITEMS.map((_, i) => (
                 <button
                   key={i}
                   onClick={() => setCurrentIndex(i)}

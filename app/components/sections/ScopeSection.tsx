@@ -73,9 +73,11 @@ const DELIVERABLES = [
 ];
 
 export function ScopeSection() {
+  const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     handleResize(); // Set initial value
     window.addEventListener("resize", handleResize);
@@ -106,7 +108,7 @@ export function ScopeSection() {
           WebkitMaskComposite: "source-in",
         }}
       >
-        <GlyphRain className="w-full h-full" />
+        <GlyphRain headColor="rgb(255, 244, 235)" trailColor="rgb(133, 87, 217)" className="w-full h-full" />
       </div>
 
       <div className="relative max-w-7xl mx-auto px-6 sm:px-10">
@@ -131,33 +133,68 @@ export function ScopeSection() {
 
         {/* Scroll Stack de entregáveis */}
         <div className="mt-8">
-          <ScrollStack
-            useWindowScroll={true}
-            itemDistance={isMobile ? 12 : 20}
-            itemScale={isMobile ? 0.045 : 0.03}
-            itemStackDistance={isMobile ? 12 : 20}
-            stackPosition={isMobile ? "10%" : "15%"}
-            scaleEndPosition="5%"
-            baseScale={isMobile ? 0.95 : 0.92}
-            blurAmount={isMobile ? 0 : 1.2}
-          >
-            {DELIVERABLES.map(({ number, title, description, icon }) => (
-              <ScrollStackItem key={number}>
+          {mounted && !isMobile ? (
+            <ScrollStack
+              useWindowScroll={true}
+              itemDistance={20}
+              itemScale={0.03}
+              itemStackDistance={20}
+              stackPosition="15%"
+              scaleEndPosition="5%"
+              baseScale={0.92}
+              blurAmount={1.2}
+            >
+              {DELIVERABLES.map(({ number, title, description, icon }) => (
+                <ScrollStackItem key={number}>
+                  <div
+                    className="w-full flex flex-col md:flex-row gap-6 p-8 md:p-10 rounded-3xl border text-left"
+                    style={{
+                      background: "#050505dc",
+                      borderColor: "rgba(200, 174, 243, 0.18)",
+                      boxShadow: "0 20px 40px -15px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255,255,255,0.06)",
+                      backdropFilter: "blur(18px)",
+                      WebkitBackdropFilter: "blur(18px)",
+                    }}
+                  >
+                    <div className="flex flex-col gap-2.5">
+                      <div className="flex items-center gap-3">
+                        <div
+                          className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+                          style={{
+                            background: "linear-gradient(135deg, rgba(124, 58, 237, 0.15) 0%, rgba(76, 29, 149, 0.2) 100%)",
+                            color: "#c084fc",
+                            border: "1px solid rgba(124, 58, 237, 0.25)",
+                          }}
+                        >
+                          {icon}
+                        </div>
+                        <span className="text-[rgba(255,255,255,0.15)] select-none text-xs">•</span>
+                        <h3 className="text-[18px] md:text-[22px] font-bold text-white tracking-tight leading-none">
+                          {title}
+                        </h3>
+                      </div>
+                      <p className="text-[14px] md:text-[15px] leading-relaxed text-white/70 max-w-2xl">
+                        {description}
+                      </p>
+                    </div>
+                  </div>
+                </ScrollStackItem>
+              ))}
+            </ScrollStack>
+          ) : (
+            <div className="flex flex-col gap-4">
+              {DELIVERABLES.map(({ number, title, description, icon }) => (
                 <div
+                  key={number}
                   className="w-full flex flex-col md:flex-row gap-6 p-8 md:p-10 rounded-3xl border text-left"
                   style={{
-                    background: "#050505dc",
+                    background: "#0a0a0af7",
                     borderColor: "rgba(200, 174, 243, 0.18)",
                     boxShadow: "0 20px 40px -15px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255,255,255,0.06)",
-                    backdropFilter: "blur(30px)",
-                    WebkitBackdropFilter: "blur(30px)",
                   }}
                 >
-
-                  {/* Conteúdo */}
                   <div className="flex flex-col gap-2.5">
                     <div className="flex items-center gap-3">
-                      {/* Ícone */}
                       <div
                         className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
                         style={{
@@ -178,9 +215,9 @@ export function ScopeSection() {
                     </p>
                   </div>
                 </div>
-              </ScrollStackItem>
-            ))}
-          </ScrollStack>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* CTA — rodapé da seção, sempre visível */}

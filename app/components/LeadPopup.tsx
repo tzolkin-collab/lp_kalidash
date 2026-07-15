@@ -3,10 +3,9 @@
 import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 import { CHECKOUT_URL, LEAD_ENDPOINT, LOTE_ONE_PRICE } from "@/app/utilities/constants";
 import { track, type CtaLocation } from "@/app/utilities/track";
+import { captureUtms } from "@/app/utilities/utms";
+import { generateSessionId, generateLeadFingerprint } from "@/app/utilities/fingerprint";
 
-// Nome do CustomEvent que abre o pop-up. Os CTAs (LeadCaptureCta) disparam este
-// evento em vez de navegar direto ao checkout — o pop-up captura o lead
-// (referência: pop-up de inscrição da Xperiun) e só então redireciona ao Sympla.
 const OPEN_EVENT = "kalidash:lead-popup";
 
 export function openLeadPopup(location: CtaLocation) {
@@ -18,7 +17,6 @@ type FieldErrors = Partial<Record<keyof Fields, string>>;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-/** Máscara (31) 99999-9999 — aceita fixo (10 dígitos) e celular (11). */
 function formatPhone(raw: string): string {
   const d = raw.replace(/\D/g, "").slice(0, 11);
   if (d.length <= 2) return d;
@@ -35,40 +33,32 @@ function validate({ name, email, phone }: Fields): FieldErrors {
   return errors;
 }
 
-/**
- * Pop-up de captura de lead — abre em qualquer CTA "Garantir vaga".
- * Fluxo: preencher nome/email/whatsapp → `lead_submit` no dataLayer (segurando
- * o redirect via eventCallback, mesma mecânica do TrackedLink) → checkout Sympla.
- * O POST do lead (LEAD_ENDPOINT) é fire-and-forget: falha no CRM nunca impede
- * o usuário de chegar ao checkout.
- *
- * Estética: segue a linguagem das seções da LP — eyebrow uppercase à esquerda,
- * headline extrabold com tracking negativo, card #0f0b1c com borda sutil e
- * glow roxo difuso, CTA dourado com pulse-gold (mesmo botão do investimento).
- */
 export function LeadPopup() {
   const [location, setLocation] = useState<CtaLocation | null>(null);
   const [fields, setFields] = useState<Fields>({ name: "", email: "", phone: "" });
   const [errors, setErrors] = useState<FieldErrors>({});
   const [redirecting, setRedirecting] = useState(false);
   const nameRef = useRef<HTMLInputElement | null>(null);
+  
+  // Track timers/locks de alteração parcial
+  const sessionIdRef = useRef<string>("");
+  const partialTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const close = useCallback(() => {
-    if (redirecting) return; // não deixa fechar no meio do redirect
+    if (redirecting) return;
     setLocation(null);
     setErrors({});
   }, [redirecting]);
 
-  // Abre via CustomEvent disparado pelos CTAs (LeadCaptureCta).
   useEffect(() => {
     const onOpen = (e: Event) => {
       setLocation((e as CustomEvent<{ location: CtaLocation }>).detail.location);
+      sessionIdRef.current = generateSessionId();
     };
     window.addEventListener(OPEN_EVENT, onOpen);
     return () => window.removeEventListener(OPEN_EVENT, onOpen);
   }, []);
 
-  // Aberto: trava o scroll do body, foca o primeiro campo e fecha com Esc.
   useEffect(() => {
     if (!location) return;
     const prevOverflow = document.body.style.overflow;
@@ -85,42 +75,136 @@ export function LeadPopup() {
     };
   }, [location, close]);
 
-  if (!location) return null;
+  // Função para salvar lead parcial via API
+  const savePartialLead = useCallback(async (currentFields: Fields) => {
+    if (!location || !sessionIdRef.current) return;
 
-  const handleSubmit = (e: FormEvent) => {
+    // Apenas envia se tiver pelo menos algum campo parcialmente preenchido
+    const hasSomeData =
+      currentFields.name.trim().length > 0 ||
+      currentFields.email.trim().length > 0 ||
+      currentFields.phone.trim().length > 0;
+
+    if (!hasSomeData) return;
+
+    try {
+      const utms = captureUtms();
+      await fetch(LEAD_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fingerprint: sessionIdRef.current,
+          name: currentFields.name.trim() || undefined,
+          email: currentFields.email.trim() || undefined,
+          phone: currentFields.phone.trim() ? `+55 ${currentFields.phone}` : undefined,
+          location,
+          status: "partial",
+          ...utms,
+        }),
+        keepalive: true,
+      });
+    } catch (e) {
+      console.error("Falha ao salvar parcial", e);
+    }
+  }, [location]);
+
+  // Agenda salvamento parcial com debounce (800ms)
+  const schedulePartialSave = (currentFields: Fields) => {
+    if (partialTimerRef.current) clearTimeout(partialTimerRef.current);
+    partialTimerRef.current = setTimeout(() => {
+      savePartialLead(currentFields);
+    }, 800);
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (!location) return;
+    if (partialTimerRef.current) clearTimeout(partialTimerRef.current);
+
     const nextErrors = validate(fields);
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) return;
 
     setRedirecting(true);
 
-    // Lead para o CRM (quando configurado) — nunca bloqueia o checkout.
-    if (LEAD_ENDPOINT) {
-      const body = new URLSearchParams({
-        fullname: fields.name.trim(),
-        email: fields.email.trim(),
-        phone: `+55 ${fields.phone}`,
-        location,
+    const utms = captureUtms();
+    const finalPhone = `+55 ${fields.phone}`;
+    
+    // Gera o fingerprint completo determinístico
+    const finalFingerprint = await generateLeadFingerprint(fields.email, fields.phone);
+
+    // 1. Envia os dados completos ao banco consolidando com o parcial existente
+    try {
+      await fetch(LEAD_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fingerprint: finalFingerprint,
+          sessionFingerprint: sessionIdRef.current || undefined,
+          name: fields.name.trim(),
+          email: fields.email.trim(),
+          phone: finalPhone,
+          location,
+          status: "complete",
+          ...utms,
+        }),
       });
-      fetch(LEAD_ENDPOINT, { method: "POST", body, mode: "no-cors", keepalive: true }).catch(() => {});
+    } catch (err) {
+      console.error("Erro ao salvar lead completo", err);
     }
 
-    // Mesma mecânica do TrackedLink: segura o redirect até o GTM confirmar o
-    // disparo (com fallback de timeout), para a conversão não se perder.
-    track({ event: "lead_submit", location }, () => {
+    // 2. Trackeia lead_submit no GTM
+    track({ event: "lead_submit", location }, async () => {
+      // 3. Dispara go_to_sympla no GTM
+      track({ event: "go_to_sympla", location });
+
+      // 4. Atualiza o status do lead para "checkout" no banco de dados antes do redirecionamento
+      const updateToCheckout = async () => {
+        const payload = {
+          location,
+          status: "checkout",
+          name: fields.name.trim(),
+          email: fields.email.trim(),
+          phone: finalPhone,
+          ...utms,
+        };
+        await fetch(LEAD_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            fingerprint: finalFingerprint,
+            sessionFingerprint: sessionIdRef.current || undefined,
+            ...payload
+          }),
+        }).catch(() => {});
+      };
+
+      await updateToCheckout();
+
+      // Redireciona de fato
       window.location.href = CHECKOUT_URL;
     });
   };
 
   const setField = (key: keyof Fields) => (value: string) => {
-    setFields((f) => ({ ...f, [key]: key === "phone" ? formatPhone(value) : value }));
+    const updated = { ...fields, [key]: key === "phone" ? formatPhone(value) : value };
+    setFields(updated);
     if (errors[key]) setErrors((prev) => ({ ...prev, [key]: undefined }));
+    
+    // Salva lead parcial ao digitar (debounced)
+    schedulePartialSave(updated);
   };
+
+  const handleBlur = () => {
+    // Ao perder o foco, salva imediatamente sem esperar o timer do debounce
+    if (partialTimerRef.current) clearTimeout(partialTimerRef.current);
+    savePartialLead(fields);
+  };
+
+  if (!location) return null;
 
   return (
     <div className="fixed inset-0 z-[70] flex items-center justify-center px-4" role="dialog" aria-modal="true" aria-labelledby="lead-popup-title">
-      {/* Backdrop — funde com o fundo profundo da página */}
       <div
         className="absolute inset-0"
         style={{ background: "rgba(13,9,17,0.82)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)" }}
@@ -128,7 +212,6 @@ export function LeadPopup() {
         aria-hidden="true"
       />
 
-      {/* Card — mesmo vocabulário dos cards de lote (rounded-[28px], borda sutil) */}
       <div
         className="relative w-full max-w-[440px] rounded-[28px] p-8 sm:p-9"
         style={{
@@ -140,14 +223,12 @@ export function LeadPopup() {
           ["--from-scale" as string]: "0.97",
         }}
       >
-        {/* Glow roxo difuso no topo do card — eco do beam das seções */}
         <div
           aria-hidden="true"
           className="absolute inset-0 rounded-[28px] pointer-events-none"
           style={{ background: "radial-gradient(ellipse 80% 45% at 50% 0%, rgba(124,58,237,0.14) 0%, transparent 70%)" }}
         />
 
-        {/* Fechar */}
         <button
           type="button"
           onClick={close}
@@ -178,7 +259,6 @@ export function LeadPopup() {
             </div>
           ) : (
             <>
-              {/* Eyebrow + headline — mesma hierarquia das seções */}
               <div className="mb-7 pr-8">
                 <p className="text-[11px] font-medium tracking-[0.18em] uppercase mb-3" style={{ color: "rgba(255,255,255,0.35)" }}>
                   Imersão Claude · BH, 01 de Agosto
@@ -204,6 +284,7 @@ export function LeadPopup() {
                     placeholder="Seu nome completo"
                     value={fields.name}
                     onChange={(e) => setField("name")(e.target.value)}
+                    onBlur={handleBlur}
                     className={inputClass(!!errors.name)}
                     required
                   />
@@ -217,6 +298,7 @@ export function LeadPopup() {
                     placeholder="voce@dominio.com"
                     value={fields.email}
                     onChange={(e) => setField("email")(e.target.value)}
+                    onBlur={handleBlur}
                     className={inputClass(!!errors.email)}
                     required
                   />
@@ -239,13 +321,13 @@ export function LeadPopup() {
                       maxLength={15}
                       value={fields.phone}
                       onChange={(e) => setField("phone")(e.target.value)}
+                      onBlur={handleBlur}
                       className={`${inputClass(!!errors.phone)} flex-1`}
                       required
                     />
                   </div>
                 </Field>
 
-                {/* CTA — idêntico ao botão do card de investimento */}
                 <button
                   type="submit"
                   className="w-full flex items-center justify-center gap-2 py-3.5 rounded-lg font-bold text-[14px] text-[#f3edf8] transition-colors duration-150 hover:bg-gold-vivid cursor-pointer mt-2"
@@ -261,7 +343,6 @@ export function LeadPopup() {
                 </button>
               </form>
 
-              {/* Rodapé — micro-informação no tom muted da página */}
               <p className="mt-5 text-center text-[12px]" style={{ color: "rgba(255,255,255,0.35)" }}>
                 Lote 01 · {LOTE_ONE_PRICE} · checkout seguro via{" "}
                 <span className="font-semibold" style={{ color: "rgba(255,255,255,0.5)" }}>Sympla</span>
